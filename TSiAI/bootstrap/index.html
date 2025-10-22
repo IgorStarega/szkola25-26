@@ -5,34 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strona z Bootstrap</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        @media (min-width: 992px) {
-            .section-3-lg { 
-                height: 100% !important;
-            }
-            .section-4-5-container {
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-            }
-            .section-4-lg {
-                flex: 1;
-                margin-bottom: 1rem !important;
-            }
-            .section-5-lg {
-                flex: 1;
-            }
-        }
-        @media (min-width: 768px) and (max-width: 991.98px) {
-            .md-equal-height {
-                display: flex;
-                align-items: stretch;
-            }
-            .section-3-md, .section-4-md {
-                height: 100%;
-            }
-        }
-    </style>
 </head>
 <body>
 <div class="container-fluid p-3">
@@ -126,25 +98,39 @@
     
     <div class="row mb-3 md-equal-height">
         <div class="col-lg-3 col-md-6 col-12 order-2 order-md-1 mb-3 mb-md-0">
-            <div class="border border-dark border-3 section-3-lg section-3-md p-3 h-100" style="min-height: 150px;">
-                <div class="list-group" id="menuPionowe">
-                    <button class="list-group-item list-group-item-action active" onclick="zmienTresc('tresc1')">Sekcja 1</button>
-                    <button class="list-group-item list-group-item-action" onclick="zmienTresc('tresc2')">Sekcja 2</button>
-                    <button class="list-group-item list-group-item-action" onclick="zmienTresc('tresc3')">Sekcja 3</button>
-                    <button class="list-group-item list-group-item-action" onclick="zmienTresc('tresc4')">Sekcja 4</button>
+            <div class="border border-dark border-3 p-3 h-100" style="min-height: 150px;">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
+                    <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab">Volvo FH16</button>
+                    <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab">Scania S V8</button>
+                    <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab">DAF XF</button>
+                    <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab">MAN TGX</button>
                 </div>
             </div>
         </div>
         
-        <div class="col-lg-9 col-md-6 col-12 order-1 order-md-2 section-4-5-container mb-3 mb-md-0">
-            <div class="border border-dark border-3 p-4 section-4-lg section-4-md h-100" style="min-height: 150px;">
-                <div id="trescDynamiczna">
-                    <h3>Sekcja 1</h3>
-                    <p>To jest treść pierwszej sekcji. Kliknij w menu po lewej stronie, aby zmienić zawartość.</p>
+        <div class="col-lg-9 col-md-6 col-12 order-1 order-md-2 d-flex flex-column mb-3 mb-md-0">
+            <div class="border border-dark border-3 p-4 mb-3 flex-grow-1" style="min-height: 150px;">
+                <div class="tab-content" id="v-pills-tabContent">
+                    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel">
+                        <h3>Volvo FH16</h3>
+                        <p>Volvo FH16 to najmocniejszy ciężarowy model Volvo, zaprojektowany do ekstremalnych zadań transportowych. Wyposażony jest w 17-litrowy silnik D17 o mocy od 600 do 780 KM i momencie obrotowym nawet 3800 Nm, co czyni go potęgą na rynku samochodów ciężarowych. Idealnie sprawdza się w przewozach ponadnormatywnych, leśnictwie, kamieniołomach i transporcie ciężkich ładunków. FH16 oferuje zaawansowane systemy oszczędzania paliwa, takie jak I-See, oraz najwyższy komfort i bezpieczeństwo kierowcy dzięki nowoczesnej, ergonomiczej kabinie i aktywnym systemom wspomagającym jazdę. Solidna konstrukcja i wytrzymałe materiały zapewniają odporność na trudne warunki pracy.​</p>
+                    </div>
+                    <div class="tab-pane fade" id="v-pills-profile" role="tabpanel">
+                        <h3>Scania S V8</h3>
+                        <p>Scania S V8 to prestiżowy, mocny ciągnik siodłowy wyposażony w legendarny silnik V8 dostępny w mocy od 530 do 770 KM i momencie obrotowym do 3700 Nm. Jest to pojazd zaprojektowany z myślą o wytrzymałości, niezawodności i oszczędności paliwa, dzięki zaawansowanym rozwiązaniom takim jak automatyczna skrzynia biegów Scania Opticruise i systemy redukcji emisji SCR. Kabina S V8 zapewnia najwyższy komfort, jest przestronna i bogato wyposażona, co czyni ją przyjazną dla kierowcy podczas długich tras. Silnik może być zasilany olejem napędowym, biodieslem i HVO, co sprzyja ekologii. Dodatkowo wersje V8 oferują retarder do efektywnego hamowania oraz opcjonalną przystawkę odbioru mocy.</p>
+                    </div>
+                    <div class="tab-pane fade" id="v-pills-messages" role="tabpanel">
+                        <h3>DAF XF</h3>
+                        <p>DAF XF to wszechstronny ciągnik siodłowy ceniony za wydajność i niezawodność. Wyposażony jest w silniki MX-13 o pojemności 12,9 litra i mocy od około 430 do 530 KM, spełniające normy Euro 6. Charakteryzuje się różnymi konfiguracjami osi, często spotykany jako 4x2, z ciężarami całkowitymi do 44 ton. XF oferuje przestronną kabinę z wariantami takimi jak Space Cab czy Super Space Cab, zapewniającą komfort kierowcy na długich trasach. Zaawansowane systemy bezpieczeństwa i ekologiczne technologie spalania sprawiają, że to popularny wybór do transportu ciężarowego na różnych dystansach.</p>
+                    </div>
+                    <div class="tab-pane fade" id="v-pills-settings" role="tabpanel">
+                        <h3>MAN TGX</h3>
+                        <p>MAN TGX to nowoczesny ciągnik siodłowy zaprojektowany z myślą o transporcie dalekobieżnym. W 2025 roku dostępny jest z silnikami spełniającymi normę Euro 6e o mocy od około 400 do 520 KM, z pojemnością 12,4 litra. Pojazd oferuje ergonomiczny kokpit i nowoczesne systemy wspomagania jazdy, które zwiększają komfort i bezpieczeństwo kierowcy. MAN TGX wyposażony jest w automatyczną skrzynię biegów i retarder, co poprawia kontrolę nad pojazdem. Oferuje przestronną kabinę, często z dodatkowymi udogodnieniami, jak systemy multimedialne i klimatyzacja postojowa. To solidna, oszczędna i bezpieczna ciężarówka dla profesjonalistów transportu.</p>
+                    </div>
                 </div>
             </div>
             
-            <div class="border border-dark border-3 p-4 section-5-lg d-none d-lg-block" style="min-height: 150px;">
+            <div class="border border-dark border-3 p-4 d-none d-lg-block" style="min-height: 150px;">
                 <h4 class="text-center mb-3">Formularz kontaktowy</h4>
                 <form>
                     <div class="mb-2">
@@ -166,10 +152,9 @@
     </div>
     
     <div class="row mb-3 d-lg-none">
-        <div class="col-12">
-            <div class="border border-dark border-3 p-4" style="min-height: 150px;">
-                <h4 class="text-center mb-3">Formularz kontaktowy</h4>
-                <form>
+        <div class="col-12 border border-dark border-3 p-4" style="min-height: 150px;">
+            <h4 class="text-center mb-3">Formularz kontaktowy</h4>
+            <form>
                     <div class="mb-2">
                         <label for="imieMobile" class="form-label">Imię i nazwisko</label>
                         <input type="text" class="form-control" id="imieMobile" required>
@@ -184,38 +169,19 @@
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Wyślij</button>
                 </form>
-            </div>
         </div>
     </div>
     
-    <div class="row mb-3">
+    <div class="row">
         <div class="col-12">
             <footer class="bg-dark text-white text-center py-4 border border-dark border-3" style="min-height: 150px;">
-                <p class="mb-0">&copy; 2025 Moja Strona. Wszystkie prawa zastrzeżone.</p>
-                <p class="mb-0">Kontakt: kontakt@mojastrona.pl | Tel: 123-456-789</p>
+                <p class="mb-0">&copy; 2025. Wszystkie prawa zastrzeżone.</p>
+                <p class="mb-0">Kontakt: kontakt@kontakt.kontakt | Tel: 123-456-789</p>
             </footer>
         </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-function zmienTresc(sekcja) {
-    const tresci = {
-        'tresc1': '<h3>Sekcja 1</h3><p>To jest treść pierwszej sekcji. Kliknij w menu po lewej stronie, aby zmienić zawartość.</p>',
-        'tresc2': '<h3>Sekcja 2</h3><p>Witaj w drugiej sekcji! Tutaj możesz znaleźć inne informacje.</p>',
-        'tresc3': '<h3>Sekcja 3</h3><p>Trzecia sekcja zawiera kolejne ciekawe treści i informacje.</p>',
-        'tresc4': '<h3>Sekcja 4</h3><p>Czwarta sekcja to ostatnia część dynamicznej zawartości.</p>'
-    };
-    
-    document.getElementById('trescDynamiczna').innerHTML = tresci[sekcja];
-    
-    document.querySelectorAll('#menuPionowe button').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    event.target.classList.add('active');
-}
-</script>
-
 </body>
 </html>
