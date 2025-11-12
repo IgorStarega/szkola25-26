@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>Zdefiniuj zmienną nazwij ją liczba. Jeśli będzie dodatnia w div-ie z id="opis"ma się wyświetlić np. tekst "21 - Liczba większa od zera."napisany jako nagłówek 1 stopnia. Dla liczb ujemnych ma się pokazać np. tekst: "-3 - Liczba ujemna.". Dla zera ma się wyświetlać tekst "- Zero".. Skorzystaj z instrukcji if - else if.</p>
+    <div id="opis"></div>
+    <script>
+        let liczba = 0;
+        let opisDiv = document.getElementById("opis");
+
+        if (liczba > 0) {
+            opisDiv.innerHTML = "<h1>" + liczba + " - Liczba większa od zera.</h1>";
+        } else if (liczba < 0) {
+            opisDiv.innerHTML = "<h1>" + liczba + " - Liczba ujemna.</h1>";
+        } else {
+            opisDiv.innerHTML = "<h1>- Zero.</h1>";
+        }
+    </script>
+</body>
+</html>

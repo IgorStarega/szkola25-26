@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>Zdefiniuj zmienną nazwij ją liczba. Jeśli będzie dodatnia w div-ie z id="opis"ma się wyświetlić np. tekst "21 - Liczba większa od zera."napisany jako nagłówek 1 stopnia. Jeśli nie ma się pokazać np. tekst: "-3 - Zero lub liczba ujemna.".</p>
+    <div id="opis"></div>
+    <script>
+        let liczba = -3;
+        let opisDiv = document.getElementById("opis");
+
+        if (liczba > 0) {
+            opisDiv.innerHTML = "<h1>" + liczba + " - Liczba większa od zera.</h1>";
+        } else {
+            opisDiv.innerHTML = "<h1>" + liczba + " - Zero lub liczba ujemna.</h1>";
+        }
+    </script>
+</body>
+</html>

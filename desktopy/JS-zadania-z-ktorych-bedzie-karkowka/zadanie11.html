@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>Napisz kod JS który w div-ie z id=wynik wyświetli liczby od 1 do 100 rozdzielone przecinkami</p>
+    <div id="wynik"></div>
+    <script>
+        let wynikDiv = document.getElementById("wynik");
+        let liczby = [];
+        for (let i = 1; i <= 100; i++) {
+            liczby.push(i);
+        }
+        wynikDiv.innerText = liczby.join(", ");
+    </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>Napisz kod, wstawi suwak o zakresie 0 do 100 z id="suwak" wartość domyślna 0. Pod suwakiem w div id="liczba" ma się wyświetlać aktualnie ustawiona wartość.</p>
+    <input type="range" id="suwak" min="0" max="100" value="0">
+    <div id="liczba">0</div>
+    <script>
+        const suwak = document.getElementById("suwak");
+        const liczbaDiv = document.getElementById("liczba");
+
+        suwak.addEventListener("input", function() {
+            liczbaDiv.innerText = suwak.value;
+        });
+    </script>
+</body>
+</html>

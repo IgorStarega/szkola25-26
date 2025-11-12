@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>Napisz kod, który dla zdefiniowanej szkolnej oceny (1,2,3,4,5,6) - zmienna ocena - wypisze jej opis słowny np. dostateczny. Informacja ma być wypisana w div-ie id="opisoceny".</p>
+    <div id="opisoceny"></div>
+    <script>
+        let ocena = 6;
+        let opisOcenyDiv = document.getElementById("opisoceny");
+        let opis;
+
+        switch (ocena) {
+            case 1:
+                opis = "niedostateczny";
+                break;
+            case 2:
+                opis = "dopuszczający";
+                break;
+            case 3:
+                opis = "dostateczny";
+                break;
+            case 4:
+                opis = "dobry";
+                break;
+            case 5:
+                opis = "bardzo dobry";
+                break;
+            case 6:
+                opis = "celujący";
+                break;
+            default:
+                opis = "Nieprawidłowa ocena";
+        }
+
+        opisOcenyDiv.innerText = opis;
+    </script>
+</body>
+</html>
