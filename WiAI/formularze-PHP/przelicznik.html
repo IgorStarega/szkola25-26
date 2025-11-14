@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Przelicznik walut</title>
+</head>
+<body>
+    <h1>Przelicznik walut</h1>
+    
+    <form action="przelicznik.php" method="post">
+        <label for="kwota">Kwota produktu w zł:</label>
+        <input type="number" id="kwota" name="kwota" step="0.01" min="0" value="0"><br><br>
+        
+        <p>Wybierz walutę:</p>
+        <input type="radio" id="funt" name="waluta" value="funt" checked>
+        <label for="funt">Funt brytyjski (GBP)</label><br>
+        
+        <input type="radio" id="euro" name="waluta" value="euro">
+        <label for="euro">Euro (EUR)</label><br><br>
+        
+        <button type="submit">Przelicz</button>
+    </form>
+</body>
+</html>

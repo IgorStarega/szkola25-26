@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zakup zeszytów</title>
+</head>
+<body>
+    <h1>Zakup zeszytów</h1>
+    
+    <form action="zeszyty.php" method="post">
+        <label for="linia">Zeszyty w linię (1,5 zł/szt.):</label>
+        <input type="number" id="linia" name="linia" min="0" value="0"><br><br>
+        
+        <label for="kratka">Zeszyty w kratkę (1,3 zł/szt.):</label>
+        <input type="number" id="kratka" name="kratka" min="0" value="0"><br><br>
+        
+        <label for="gladkie">Zeszyty gładkie (1 zł/szt.):</label>
+        <input type="number" id="gladkie" name="gladkie" min="0" value="0"><br><br>
+        
+        <button type="submit">Oblicz wartość zakupu</button>
+    </form>
+</body>
+</html>
