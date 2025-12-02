@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeria zdjęć</title>
+    <style>
+        #mainImage {
+            width: 600px;
+            height: 400px;
+            object-fit: contain;
+        }
+        .thumbnail {
+            width: 150px;
+            height: 100px;
+            object-fit: cover;
+            transition: all 0.3s;
+        }
+        .thumbnail:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <img src="img/scania.png" alt="Główne zdjęcie" id="mainImage">
+    <div>
+        <img src="img/volvo.png" alt="Volvo" class="thumbnail" data-full="img/volvo.png">
+        <img src="img/daf.png" alt="DAF" class="thumbnail" data-full="img/daf.png">
+        <img src="img/man.png" alt="MAN" class="thumbnail" data-full="img/man.png">
+    </div>
+    
+    <script src="JQuery.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.thumbnail').click(function() {
+                var fullImageSrc = $(this).attr('data-full');
+                $('#mainImage').fadeOut(200, function() {
+                    $(this).attr('src', fullImageSrc).fadeIn(200);
+                });
+                $('.thumbnail').removeClass('active');
+                $(this).addClass('active');
+            });
+        });
+    </script>
+</body>
+</html>
