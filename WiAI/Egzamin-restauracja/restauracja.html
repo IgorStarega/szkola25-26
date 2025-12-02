@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restauracja Wszystkie Smaki</title>
+    <link rel="stylesheet" href="styl1.css">
+</head>
+<body>
+    <header>
+        <h1>Witamy w restauracji „Wszystkie Smaki”</h1>
+    </header>
+    <main>
+        <div class="lewy">
+            <img src="menu.jpg" alt="Nasze danie">
+        </div>
+        <div class="prawy">
+            <h4>„U nas dobrze zjesz!”</h4>
+            <ul>
+                <li>Obiady od 40zł</li>
+                <li>Przekąski od 10zł</li>
+                <li>Kolacje od 20zł</li>
+            </ul>
+        </div>
+        <div class="dolny">
+            <h2>„Zarezerwuj stolik on-line”</h2>
+            <form action="" method="post">
+                <label for="Data">Data (format rrrr-mm-dd)</label><br>
+                <input type="text" id="Data" name="Data"><br>
+                <label for="Osoby">Ile osób?</label><br>
+                <input type="number" id="Osoby" name="Osoby" min="1" max="20"><br>
+                <label for="Tel">Twój numer telefonu</label><br>
+                <input type="text" id="Tel" name="Tel" pattern="[0-9]{9}" placeholder="123456789"><br>
+                <input type="checkbox" name="RODO" id="RODO"><label for="RODO">Zgadzam się na przetwarzanie danych osobowych</label><br>
+                <button type="reset">Wyczyść</button>
+                <button type="submit">Rezerwuj</button>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <p>Stronę internetową opracował: <i>Wilson</i></p>
+    </footer>
+</body>
+</html>
