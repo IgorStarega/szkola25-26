@@ -23,19 +23,20 @@
             </ul>
         </div>
         <div class="dolny">
-            <h2>„Zarezerwuj stolik on-line"</h2>
-            <form action="rezerwacja.php" method="post">
-                <label for="Data">Data (format rrrr-mm-dd)</label><br>
-                <input type="text" id="Data" name="Data"><br>
-                <label for="Osoby">Ile osób?</label><br>
-                <input type="number" id="Osoby" name="Osoby" min="1" max="20"><br>
-                <label for="Tel">Twój numer telefonu:</label><br>
-                <input type="text" id="Tel" name="Tel" pattern="[0-9]{9}" placeholder="123456789"><br>
-                <input type="checkbox" name="RODO" id="RODO"><label for="RODO">Zgadzam się na przetwarzanie moich danych osobowych</label><br>
-                <button type="reset">WYCZYŚĆ</button>
-                <button type="submit">REZERWUJ</button>
-            </form>
-        </div>
+			<h2>Zarezerwuj stolik on-line</h2>
+			<form action="restauracja.php" method="post">
+				<label for="data">Data (format rrrr-mm-dd):</label><br>
+				<input type="date" name="data" id="data"><br>
+				<label for="osoby">Ile osób? </label><br>
+				<input type="number" name="osoby" id="osoby"><br>
+				<label for="telefon">Twój numer telefonu:</label><br>
+				<input type="number" name="telefon" id="telefon"><br>
+				<input type="checkbox" name="checkbox" id="checkbox" required>
+				<label for="checkbox">Zgadzam się na przetwarzanie moich danych osobowych</label><br>
+				<input type="reset" value="Wyczyść">
+				<input type="submit" value="Rezerwuj">
+			</form>
+		</div>
     </main>
     <footer>
         <p>Stronę internetową opracował: <i>Wilson</i></p>
