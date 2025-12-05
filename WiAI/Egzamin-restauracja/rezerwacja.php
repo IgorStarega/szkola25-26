@@ -1,43 +1,13 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rezerwacja</title>
-</head>
-<body>
-    <?php
-    // Sprawdzenie, czy formularz został wysłany metodą POST
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Połączenie z bazą danych
-        $conn = mysqli_connect("wilson-db", "root", "", "baza");
-        
-        // Sprawdzenie połączenia
-        if (!$conn) {
-            die("Błąd połączenia: " . mysqli_connect_error());
-        }
+<?php
 
-        // Pobranie danych z formularza
-        $data = $_POST['Data'];
-        $osoby = $_POST['Osoby'];
-        $telefon = $_POST['Tel'];
+echo "<script>alert('Dodano rezerwację do bazy;')</script>";
 
-        // Zapytanie INSERT do tabeli rezerwacje (bez nr_stolika)
-        $zapytanie = "INSERT INTO rezerwacje (data_rez, liczba_osob, telefon) VALUES ('$data', '$osoby', '$telefon')";
-        
-        if (mysqli_query($conn, $zapytanie)) {
-            // Wypisanie komunikatu
-            echo "Dodano rezerwację do bazy";
-        } else {
-            echo "Błąd: " . mysqli_error($conn);
-        }
+$data_rez=$_POST['data'];
+$osob=$_POST['osoby'];
+$nr_tel=$_POST['telefon'];
 
-        // Zamknięcie połączenia
-        mysqli_close($conn);
-    } else {
-        // Jeśli strona została otwarta bezpośrednio (GET)
-        echo "Brak danych do przetworzenia. Wypełnij formularz na stronie głównej.";
-    }
-    ?>
-</body>
-</html>
+
+$con = mysqli_connect("wytrychy-db", "root", "rootpassword", "baza-restauracja");
+
+$zapytanie = mysqli_query($con, "INSERT INTO rezerwacje (nr_stolika, data_rez, liczba_osob, telefon) VALUES (5, '$data_rez', $osob, '$nr_tel')");
+?>
