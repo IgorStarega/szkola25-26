@@ -8,7 +8,7 @@
 <body>
     <?php
     // Połączenie z bazą danych
-    $conn = mysqli_connect("localhost", "root", "", "baza");
+    $conn = mysqli_connect("localhost", "root", "restauracja", "baza");
 
     // Pobranie danych z formularza
     $data = $_POST['Data'];
