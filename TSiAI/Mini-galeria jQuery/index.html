@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Kompaktowa Galeria</title>
+    <style>
+        /* Ogólne style strony */
+        body {
+            font-family: sans-serif;
+            background: #222;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Przyciski filtrowania */
+        .btn {
+            padding: 8px 15px;
+            margin: 5px;
+            cursor: pointer;
+            background: #444;
+            color: #fff;
+            border: none;
+        }
+
+        .btn:hover {
+            background: #007bff;
+        }
+
+        /* Siatka 3 kolumny */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        /* Kontener pojedynczego obrazka */
+        .img-box {
+            height: 200px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        /* Pełnoekranowy modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        /* Powiększony obrazek w modalu */
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            box-shadow: 0 0 20px #000;
+        }
+
+        /* Przycisk zamykania X */
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        #big-img {
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Przyciski filtrowania -->
+<div>
+    <button class="btn" data-filter="all">Wszystkie</button>
+    <button class="btn" data-filter="tiry">Tiry</button>
+    <button class="btn" data-filter="auta">Auta</button>
+    <button class="btn" data-filter="natura">Natura</button>
+</div>
+
+<!-- Siatka galerii -->
+<div class="grid">
+    <div class="img-box tiry" data-full="img/tir1.png"><img src="img/tir1.png" alt="Tir 1"></div>
+    <div class="img-box tiry" data-full="img/tir2.png"><img src="img/tir2.png" alt="Tir 2"></div>
+    <div class="img-box tiry" data-full="img/tir3.png"><img src="img/tir3.png" alt="Tir 3"></div>
+    <div class="img-box auta" data-full="img/auto1.png"><img src="img/auto1.png" alt="Auto 1"></div>
+    <div class="img-box auta" data-full="img/auto2.png"><img src="img/auto2.png" alt="Auto 2"></div>
+    <div class="img-box auta" data-full="img/auto3.png"><img src="img/auto3.png" alt="Auto 3"></div>
+    <div class="img-box natura" data-full="img/natura1.png"><img src="img/natura1.png" alt="Natura 1"></div>
+    <div class="img-box natura" data-full="img/natura2.png"><img src="img/natura2.png" alt="Natura 2"></div>
+    <div class="img-box natura" data-full="img/natura3.png"><img src="img/natura3.png" alt="Natura 3"></div>
+</div>
+
+<!-- Modal z powiększonym obrazem -->
+<div class="modal">
+    <span class="close">&times;</span>
+    <img id="big-img" src="" alt="Powiększony obrazek">
+</div>
+<script src="jquery-3.7.1.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Cache selektorów jQuery
+        const $imgBoxes = $('.img-box');
+        const $modal = $('.modal');
+        const $bigImg = $('#big-img');
+
+        // Animacja pojawiania się obrazków
+        $imgBoxes.each(function(i) {
+            $(this).delay(i * 150).fadeIn(500);
+        });
+
+        // Filtrowanie galerii po kategorii
+        $('.btn').click(function() {
+            const cat = $(this).data('filter');
+            if (cat === 'all') {
+                $imgBoxes.fadeIn();
+            } else {
+                $imgBoxes.hide();
+                $('.' + cat).fadeIn();
+            }
+        });
+
+        // Otwieranie modala z powiększonym obrazem
+        $imgBoxes.click(function() {
+            const fullSrc = $(this).data('full') || $(this).find('img').attr('src');
+            $bigImg.attr('src', fullSrc);
+            $modal.css('display', 'flex').hide().fadeIn(300);
+        });
+
+        // Zamykanie modala po kliknięciu w tło
+        $modal.click(function(e) {
+            if (e.target !== $bigImg[0]) {
+                $modal.fadeOut(300);
+            }
+        });
+
+        // Zamykanie modala przyciskiem X
+        $('.close').click(function() {
+            $modal.fadeOut(300);
+        });
+    });
+</script>
+</body>
+</html>
