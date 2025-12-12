@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Gry komputerowe</title>
+    <link rel="stylesheet" href="styl.css">
+</head>
+<body>
+<header>
+    <h1>Ranking gier komputerowych</h1>
+</header>
+
+<div id="lewy">
+    <h3>Top 5 gier w tym miesiącu</h3>
+    <ul id="wynik1"></ul>
+
+    <h3>Nasz sklep</h3>
+    <a href="http://sklep.gry.pl">Tu kupisz gry</a>
+
+    <h3>Stronę wykonał</h3>
+    <p>00000000000</p>
+</div>
+
+<div id="środkowy">
+    <div id="wynik2"></div>
+</div>
+
+<div id="prawy">
+    <h3>Dodaj nową grę</h3>
+    <form action="" method="POST">
+        <label for="nazwa">nazwa</label><br>
+        <input type="text" name="nazwa" id="nazwa"><br>
+
+        <label for="opis">opis</label><br>
+        <input type="text" name="opis" id="opis"><br>
+
+        <label for="cena">cena</label><br>
+        <input type="text" name="cena" id="cena"><br>
+
+        <label for="zdjecie">zdjęcie</label><br>
+        <input type="text" name="zdjecie" id="zdjecie"><br>
+
+        <button type="submit">DODAJ</button>
+    </form>
+</div>
+
+<footer>
+    <form action="" method="POST">
+        <label for="wybor">Wybierz grę:</label>
+        <input type="number" name="id_gry" id="wybor">
+        <button type="submit">Pokaż opis</button>
+    </form>
+</footer>
+</body>
+</html>
