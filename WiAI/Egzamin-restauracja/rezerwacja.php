@@ -7,7 +7,7 @@ $osob=$_POST['osoby'];
 $nr_tel=$_POST['telefon'];
 
 
-$con = mysqli_connect("wilson-db", "root", "rootpassword", "baza-restauracja");
+$con = mysqli_connect("wilson-db", "root", "rootpassword", "restauracja");
 
 $zapytanie = mysqli_query($con, "INSERT INTO rezerwacje (nr_stolika, data_rez, liczba_osob, telefon) VALUES (5, '$data_rez', $osob, '$nr_tel')");
 
