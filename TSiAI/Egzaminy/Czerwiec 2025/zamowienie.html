@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Fotografia</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Fotografia artystyczna</h1>
+    </header>
+    <div id="obrazki">
+        <img src="img/1.jpg" alt="obrazy do sprzedaży" title="1.jpg">
+        <img src="img/2.jpg" alt="obrazy do sprzedaży" title="2.jpg">
+        <img src="img/3.jpg" alt="obrazy do sprzedaży" title="3.jpg">
+        <img src="img/4.jpg" alt="obrazy do sprzedaży" title="4.jpg">
+        <img src="img/5.jpg" alt="obrazy do sprzedaży" title="5.jpg">
+        <img src="img/6.jpg" alt="obrazy do sprzedaży" title="6.jpg">
+        <img src="img/7.jpg" alt="obrazy do sprzedaży" title="7.jpg">
+        <img src="img/8.jpg" alt="obrazy do sprzedaży" title="8.jpg">
+        <img src="img/9.jpg" alt="obrazy do sprzedaży" title="9.jpg">
+        <img src="img/10.jpg" alt="obrazy do sprzedaży" title="10.jpg">
+    </div>
+    <main>
+        <div id="lewy">
+            <h1>Zamówienie</h1>
+            <form action="">
+                <label for="plik">Wybierz obraz:</label><input type="file" name="plik" id="plik" accept=".jpg"><br>
+                <label for="kopie">Liczba Kopii:</label><input type="number" name="kopie" id="kopie"><br>
+                <input type="radio" id="papier-bly"><label for="papier-bly">Papier błyszczący</label><br>
+                <input type="radio" id="papier-mat"><label for="papier-mat">Papier matowy</label><br>
+                <button type="submit" id="do-koszyka">Dodaj do koszyka</button>
+            </form>
+        </div>
+        <div id="nawigacja">
+            <ol>
+                <li><a href="regulamin.html">Regulamin</a></li>
+                <li><a href="uslugi.html">Usługi</a></li>
+                <li><a href="https://pixabay.com ">Zdjęcia</a></li>
+            </ol>
+        </div>
+        <div id="prawy">
+            <h3>Koszyk</h3>
+            <div id="wynik"></div>
+        </div>
+    </main>
+    <footer>
+        Autor strony: Igor
+    </footer>
+</body>
+</html>
