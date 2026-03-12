@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <h1>Zadanie 1</h1>
+        <p>Po najechaniu na obrazek: <br>
+            • obrazek zmienia ramkę na czerwoną <br>
+            Po zjechaniu: <br>
+            • ramka znika</p>
+        <img src="img/pizza.png" alt="obrazek" onmouseover="ramka()" onmouseout="bezramki()">
+    </div>
+    <div>
+        <h1>Zadanie 2</h1>
+        <p>Po najechaniu na przycisk: <br>
+            • zmienia się kolor przycisku <br>
+            • zmienia się tekst</p>
+        <button onmouseover="kolor()">Przycisk</button>
+    </div>
+    <div>
+        <h1>Zadanie 3</h1>
+        <p>Stwórz stronę z 3 obrazkami. <br>
+            Po najechaniu na obrazek: <br>
+            • obrazek się powiększa <br>
+            Po zjechaniu: <br>
+            • wraca do pierwotnego rozmiaru</p>
+        <img src="img/zamczysko.jpg" alt="obrazek" id="zamek" onmouseover="powieksz()" onmouseout="zmniejsz()">
+        <br>
+        <img src="img/WyprawaNaKsiezyc.jpg" alt="obrazek" id="wyprawa" onmouseover="powieksz2()" onmouseout="zmniejsz2()">
+        <br>
+        <img src="img/Persja.jpg" alt="obrazek" id="persja" onmouseover="powieksz3()" onmouseout="zmniejsz3()">
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
