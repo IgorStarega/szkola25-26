@@ -52,6 +52,9 @@ require_once 'database.php';
                     <input type="submit" class="btn btn-danger" name="reset" value="Resetuj" />
                 </div>
             </div>
+            <div class="col-md-2 text-left">
+                <a class="btn btn-success" href="dodaj_prac.php" role="button">Dodaj pracownika</a>
+            </div>
         </form>
         <div class="row">
             <div class="col-12">
