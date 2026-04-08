@@ -81,15 +81,11 @@ require_once 'database.php';
             </li>
         </ul>
         <form action="" method="post">
-            <div class="row my-5">
-                <div class="col-md-4">
-                    <input type="text" class="form-control" name="search" value="<?php echo isset($_POST['reset']) ? '' : (isset($_POST['search']) ? htmlspecialchars($_POST['search']) : ''); ?>" />
-                </div>
-                <div class="col-md-1 text-left">
-                    <input type="submit" class="btn btn-primary" name="submit" value="Szukaj" />
-                </div>
-                <div class="col-md-1 text-left">
-                    <input type="submit" class="btn btn-danger" name="reset" value="Resetuj" />
+            <div class="d-flex flex-wrap justify-content-start align-items-center p-4 bg-light shadow-sm rounded my-4 gap-3">
+                <div class="input-group" style="max-width: 500px;">
+                    <input type="text" class="form-control border-primary" name="search" value="<?php echo isset($_POST['reset']) ? '' : (isset($_POST['search']) ? htmlspecialchars($_POST['search']) : ''); ?>" placeholder="Wpisz szukaną frazę..." />
+                    <button class="btn btn-primary" type="submit" name="submit">Szukaj</button>
+                    <input type="submit" class="btn btn-danger" name="reset" value="Reset" />
                 </div>
             </div>
         </form>

@@ -62,18 +62,14 @@ else
         </li>
     </ul>
     <form action="" method="post">
-        <div class="row my-5">
-            <div class="col-md-4">
-                <input type="text" class="form-control" name="search" value="<?php echo isset($_POST['reset']) ? '' : (isset($_POST['search']) ? htmlspecialchars($_POST['search']) : ''); ?>" />
+        <div class="d-flex flex-wrap justify-content-between align-items-center p-4 bg-light shadow-sm rounded my-4 gap-3">
+            <div class="input-group" style="max-width: 500px;">
+                <input type="text" class="form-control border-primary" name="search" value="<?php echo isset($_POST['reset']) ? '' : (isset($_POST['search']) ? htmlspecialchars($_POST['search']) : ''); ?>" placeholder="Wpisz szukaną frazę..." />
+                <button class="btn btn-primary" type="submit" name="submit">Szukaj</button>
+                <input type="submit" class="btn btn-danger" name="reset" value="Reset" />
             </div>
-            <div class="col-md-1 text-left">
-                <input type="submit" class="btn btn-primary" name="submit" value="Szukaj" />
-            </div>
-            <div class="col-md-1 text-left">
-                <input type="submit" class="btn btn-danger" name="reset" value="Resetuj" />
-            </div>
-            <div class="col-md-6 text-left d-flex justify-content-end">
-                <a href="dodaj/zespol.php" class="btn btn-success">Dodaj nowy zespół</a>
+            <div>
+                <a href="dodaj/zespol.php" class="btn btn-success btn-lg shadow-sm">Dodaj nowy zespół</a>
             </div>
         </div>
     </form>
