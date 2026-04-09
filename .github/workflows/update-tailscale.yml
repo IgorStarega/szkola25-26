@@ -1,24 +1,18 @@
-name:  Aktualizowanie strony przez Tailscale
+name: Aktualizowanie repozytoriów przez Tailscale
 
 on:
   push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
-  deploy:
+  git-pull-all-repos:
     runs-on: ubuntu-latest
 
     env:
       TS_TAG: tag:github-actions
       REMOTE_USER: github-actions
       REMOTE_HOSTNAME: 100.67.200.23
-      GITHUB_REPOSITORY: ${{ github.REPOSITORY }}
-      GITHUB_REF_NAME: ${{ github.GITHUB_REF_NAME }}
-      GITHUB_ACTOR: ${{ github.ACTOR }}
-      GITHUB_RUN_NUMBER: ${{ github.RUN_NUMBER }}
-      GITHUB_SHA: ${{ github.SHA }}
+      REMOTE_REPO_ROOTS: /home/github-actions/repos /home/github-actions/projects
 
     steps:
       - name: Checkout
@@ -40,4 +34,41 @@ jobs:
 
       - name: Połączenie przez ssh jako github-actions
         run: |
-          ssh -i ~/.ssh/id_rsa ${{ env.REMOTE_USER }}@${{ env.REMOTE_HOSTNAME }} 
+          ssh -i ~/.ssh/id_rsa ${{ env.REMOTE_USER }}@${{ env.REMOTE_HOSTNAME }} <<'EOF'
+            set -euo pipefail
+
+            failed_repos=()
+            repos=()
+            read -r -a repo_roots <<< "${{ env.REMOTE_REPO_ROOTS }}"
+
+            for root in "${repo_roots[@]}"; do
+              if [ -d "$root" ]; then
+                while IFS= read -r repo; do
+                  repos+=("$repo")
+                done < <(
+                  find "$root" -type d -name .git -prune 2>/dev/null \
+                  | sed 's|/\.git$||'
+                )
+              fi
+            done
+
+            if [ "${#repos[@]}" -eq 0 ]; then
+              echo "Nie znaleziono żadnych sklonowanych repozytoriów w: ${repo_roots[*]}"
+              exit 0
+            fi
+
+            for repo in "${repos[@]}"; do
+              if [ -d "$repo/.git" ]; then
+                echo "Aktualizacja: $repo"
+                if ! git -C "$repo" pull --ff-only; then
+                  failed_repos+=("$repo")
+                fi
+              fi
+            done
+
+            if [ "${#failed_repos[@]}" -gt 0 ]; then
+              echo "Błąd aktualizacji repozytoriów:"
+              printf '%s\n' "${failed_repos[@]}"
+              exit 1
+            fi
+          EOF
