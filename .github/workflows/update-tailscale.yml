@@ -2,11 +2,19 @@ name: Aktualizowanie repozytoriów przez Tailscale
 
 on:
   push:
+    branches:
+      - '**'
+    tags-ignore:
+      - '**'
   workflow_dispatch:
 
 jobs:
   git-pull-all-repos:
     runs-on: ubuntu-latest
+
+    concurrency:
+      group: git-pull-all-repos
+      cancel-in-progress: false
 
     env:
       TS_TAG: tag:github-actions
@@ -46,7 +54,7 @@ jobs:
                 while IFS= read -r repo; do
                   repos+=("$repo")
                 done < <(
-                  find "$root" -type d -name .git -prune 2>/dev/null \
+                  find "$root" -type d -name .git -prune -print 2>/dev/null \
                   | sed 's|/\.git$||'
                 )
               fi
