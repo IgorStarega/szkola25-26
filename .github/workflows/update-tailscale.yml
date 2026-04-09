@@ -12,6 +12,7 @@ jobs:
       TS_TAG: tag:github-actions
       REMOTE_USER: github-actions
       REMOTE_HOSTNAME: 100.67.200.23
+      REMOTE_REPO_ROOTS: /home/github-actions/repos /home/github-actions/projects
 
     steps:
       - name: Checkout
@@ -36,21 +37,38 @@ jobs:
           ssh -i ~/.ssh/id_rsa ${{ env.REMOTE_USER }}@${{ env.REMOTE_HOSTNAME }} <<'EOF'
             set -euo pipefail
 
-            mapfile -t repos < <(
-              find "$HOME" -type d -name .git -prune 2>/dev/null \
-              | sed 's|/\.git$||' \
-              | sort -u
-            )
+            failed_repos=()
+            repos=()
+            read -r -a repo_roots <<< "${{ env.REMOTE_REPO_ROOTS }}"
+
+            for root in "${repo_roots[@]}"; do
+              if [ -d "$root" ]; then
+                while IFS= read -r repo; do
+                  repos+=("$repo")
+                done < <(
+                  find "$root" -type d -name .git -prune 2>/dev/null \
+                  | sed 's|/\.git$||'
+                )
+              fi
+            done
 
             if [ "${#repos[@]}" -eq 0 ]; then
-              echo "Nie znaleziono żadnych sklonowanych repozytoriów."
+              echo "Nie znaleziono żadnych sklonowanych repozytoriów w: ${repo_roots[*]}"
               exit 0
             fi
 
             for repo in "${repos[@]}"; do
               if [ -d "$repo/.git" ]; then
                 echo "Aktualizacja: $repo"
-                git -C "$repo" pull --ff-only || echo "Błąd aktualizacji: $repo"
+                if ! git -C "$repo" pull --ff-only; then
+                  failed_repos+=("$repo")
+                fi
               fi
             done
+
+            if [ "${#failed_repos[@]}" -gt 0 ]; then
+              echo "Błąd aktualizacji repozytoriów:"
+              printf '%s\n' "${failed_repos[@]}"
+              exit 1
+            fi
           EOF
