@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h1>Zadanie 1</h1>
+        <p id="Wynik"></p>
+        <script>
+            let date = new Date();
+            document.getElementById("Wynik").innerHTML = date;
+        </script>
+    </div>
+    <div>
+        <h1>Zadanie 2</h1>
+        <p id="Wynik2"></p>
+        <script>
+            let dateDMR = new Date();
+            document.getElementById("Wynik2").innerHTML = dateDMR.getDate() + "/" + (dateDMR.getMonth() + 1) + "/" + dateDMR.getFullYear();
+        </script>
+    </div>
+    <div>
+        <h1>Zadanie 3</h1>
+        <p id="Wynik3"></p>
+        <script>
+            let dateCzas = new Date();
+            document.getElementById("Wynik3").innerHTML = dateCzas.getHours() + ":" + dateCzas.getMinutes() + ":" + dateCzas.getSeconds();
+        </script>
+    </div>
+    <div>
+        <h1>Zadanie 4</h1>
+        <p id="Wynik4"></p>
+        <script>
+            let dateDzien = new Date();
+            let dni = ["Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"];
+            document.getElementById("Wynik4").innerHTML = dni[dateDzien.getDay()];
+        </script>
+    </div>
+</body>
+</html>
