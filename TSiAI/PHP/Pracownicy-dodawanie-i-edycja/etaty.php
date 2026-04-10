@@ -1,5 +1,5 @@
 <?php
-require_once '/database.php';
+require_once 'database.php';
 
 if (isset($_POST['delete']) && isset($_POST['delete_nazwa'])){
 
