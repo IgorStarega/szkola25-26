@@ -1,5 +1,5 @@
 <?php
-require_once 'database.php';
+require_once __DIR__ . '/database.php';
 ?>
 <!doctype html>
 <html lang="en" data-bs-theme="dark">
