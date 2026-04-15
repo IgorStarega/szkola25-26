@@ -1,5 +1,5 @@
 <?php
-require_once 'database.php';
+require_once './database.php';
 
 if (isset($_POST['delete']) && isset($_POST['delete_id'])){
 
@@ -10,9 +10,6 @@ if (isset($_POST['delete']) && isset($_POST['delete_id'])){
     $stmt = $pdo->prepare("DELETE FROM pracownicy WHERE ID_PRAC = :ID_PRAC");
     $stmt->bindParam(':ID_PRAC', $_POST['delete_id'], PDO::PARAM_INT);
     $stmt->execute();
-
-    # tu jest szpont zeby nie wywalalo komunikatu fikusnego. Mozna bylo to zostawic tak jak jest ale przy testowaniu irytuje jak cholera
-
     header('Location: index.php');
     exit;
 }

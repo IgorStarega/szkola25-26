@@ -173,6 +173,23 @@ if (isset($_POST['submit'])) {
     else if (isset($_POST['placa_pod']))
     {
         $placa_pod = $_POST['placa_pod'];
+
+        $stmt_etat = $pdo->prepare("SELECT PLACA_OD, PLACA_DO FROM etaty WHERE NAZWA = :etat");
+        $stmt_etat->bindParam(':etat', $etat);
+        $stmt_etat->execute();
+        $widełki = $stmt_etat->fetch(PDO::FETCH_ASSOC);
+
+        if ($widełki) {
+            if ($placa_pod < $widełki['PLACA_OD']) {
+                $zapisano = "Nie";
+                $blad = "Tak";
+                $blad_placa_pod = "Płaca podstawowa jest mniejsza niż minimum dla etatu (" . $widełki['PLACA_OD'] . ")";
+            } else if (!empty($widełki['PLACA_DO']) && $placa_pod > $widełki['PLACA_DO']) {
+                $zapisano = "Nie";
+                $blad = "Tak";
+                $blad_placa_pod = "Płaca podstawowa jest większa niż maksimum dla etatu (" . $widełki['PLACA_DO'] . ")";
+            }
+        }
     }
 
 
@@ -325,10 +342,10 @@ if (isset($_POST['submit'])) {
                         <div class="form-floating mb-3">
                             <?php if ($blad_etat != ""): ?>
                                 <select class="form-select mb-3 <?php if ($blad != ""): ?> is-invalid <?php endif; ?> " id="Etat" name="etat" aria-label="Default select example">
-                                    <option value="" <?php echo (!isset($etat) || $etat === "") ? 'selected' : ''; ?>>Wybierz etat</option>
+                                    <option value="" <?php echo (!isset($_POST['etat']) || $_POST['etat'] === "") ? 'selected' : ''; ?>>Wybierz etat</option>
                                     <?php
                                         foreach ($etaty as $row) {
-                                            $etat_selected = (isset($etat) && $etat === $row['NAZWA']) || (!isset($_POST['etat']) && $pracownik['ETAT'] === $row['NAZWA']) ? 'selected' : '';
+                                            $etat_selected = (isset($_POST['etat']) && $_POST['etat'] === $row['NAZWA']) || (!isset($_POST['etat']) && $pracownik['ETAT'] === $row['NAZWA']) ? 'selected' : '';
                                             echo '<option value="' . htmlspecialchars($row['NAZWA']) . '" ' . $etat_selected . '>' . htmlspecialchars($row['NAZWA']) . '</option>';
                                         };
                                     ?>
@@ -339,9 +356,9 @@ if (isset($_POST['submit'])) {
                                 </div>
                             <?php else: ?>
                             <select class="form-select mb-3" id="Etat" name="etat" aria-label="Default select example">
-                                <option value="" <?php echo (!isset($pracownik['ETAT']) || $pracownik['ETAT'] === "") ? 'selected' : ''; ?>>Wybierz etat</option>
+                                <option value="" <?php echo (!isset($_POST['etat']) && !isset($pracownik['ETAT'])) || (isset($_POST['etat']) && $_POST['etat'] === "") ? 'selected' : ''; ?>>Wybierz etat</option>
                                 <?php foreach ($etaty as $row): ?>
-                                    <?php $etat_selected = (isset($pracownik['ETAT']) && $pracownik['ETAT'] === $row['NAZWA']) ? 'selected' : ''; ?>
+                                    <?php $etat_selected = (isset($_POST['etat']) && $_POST['etat'] === $row['NAZWA']) || (!isset($_POST['etat']) && $pracownik['ETAT'] === $row['NAZWA']) ? 'selected' : ''; ?>
                                     <option value="<?php echo htmlspecialchars($row['NAZWA']); ?>" <?php echo $etat_selected; ?>><?php echo htmlspecialchars($row['NAZWA']); ?></option>
                                 <?php endforeach; ?>
                             </select>

@@ -124,13 +124,31 @@ if (isset($_POST['submit'])) {
     {
         try
         {
-            $stmt = $pdo->prepare("UPDATE etaty SET PLACA_OD = :placa_od, PLACA_DO = :placa_do WHERE NAZWA = :nazwa");
+            $pdo->beginTransaction();
+            
+            // Jeśli nazwa została zmieniona, zaktualizuj też tabelę pracownicy
+            if ($nazwa !== $_POST['stara_nazwa']) {
+                $stmt_upd = $pdo->prepare("UPDATE pracownicy SET ETAT = :nowa WHERE ETAT = :stara");
+                $stmt_upd->bindParam(':nowa', $nazwa);
+                $stmt_upd->bindParam(':stara', $_POST['stara_nazwa']);
+                $stmt_upd->execute();
+            }
+
+            $stmt = $pdo->prepare("UPDATE etaty SET NAZWA = :nazwa, PLACA_OD = :placa_od, PLACA_DO = :placa_do WHERE NAZWA = :stara_nazwa");
             $stmt->bindParam(':nazwa', $nazwa);
+            $stmt->bindParam(':stara_nazwa', $_POST['stara_nazwa']);
             $stmt->bindParam(':placa_od', $placa_od);
             $stmt->bindParam(':placa_do', $placa_do);
             $stmt->execute();
+
+            $pdo->commit();
             $zapisano = "Tak";
+            
+            // Przekierowanie do nowej nazwy w URL po sukcesie
+            header("Location: etaty.php?nazwa=" . urlencode($nazwa));
+            exit;
         } catch (PDOException $e) {
+            $pdo->rollBack();
             $zapisano = "Nie";
             $blad = $e->getMessage();
         }
@@ -183,9 +201,10 @@ if (isset($_POST['submit'])) {
 
                 ?>
 
-                <?php if (in_array($_GET['nazwa'], array_column($etaty, 'NAZWA'))): ?> ?>
+                <?php if (in_array($_GET['nazwa'], array_column($etaty, 'NAZWA'))): ?>
 
                     <form class="mt-4" method="post" action="" novalidate>
+                        <input type="hidden" name="stara_nazwa" value="<?php echo htmlspecialchars($_GET['nazwa']); ?>">
 
                         <div class="form-floating mb-3">
                             <?php if ($blad_nazwa != ""): ?>

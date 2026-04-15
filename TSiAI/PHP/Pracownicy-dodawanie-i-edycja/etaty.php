@@ -11,8 +11,6 @@ if (isset($_POST['delete']) && isset($_POST['delete_nazwa'])){
     $stmt->bindParam(':NAZWA', $_POST['delete_nazwa'], PDO::PARAM_STR);
     $stmt->execute();
 
-    # tu jest szpont zeby nie wywalalo komunikatu fikusnego. Mozna bylo to zostawic tak jak jest ale przy testowaniu irytuje jak cholera
-
     header('Location: etaty.php');
     exit;
 }
@@ -90,7 +88,7 @@ else
                     echo '<td>'.$row['NAZWA'].'</td>';
                     echo '<td>'.$row['PLACA_OD'].'</td>';
                     echo '<td>'.$row['PLACA_DO'].'</td>';
-                    echo '<td><a href="edytuj/etat.php?nazwa='.$row['NAZWA'].'"><button type="button" class="btn btn-outline-secondary me-2"><i class="bi bi-pencil-square"></i></button></a>';
+                    echo '<td><a href="edytuj/etaty.php?nazwa='.$row['NAZWA'].'"><button type="button" class="btn btn-outline-secondary me-2"><i class="bi bi-pencil-square"></i></button></a>';
                     echo '<button type="button" class="btn btn-outline-danger" 
                                     tabindex="0"
                                     data-bs-toggle="popover"

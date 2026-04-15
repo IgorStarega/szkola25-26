@@ -174,6 +174,23 @@ if (isset($_POST['submit'])) {
     else if (isset($_POST['placa_pod']))
     {
         $placa_pod = $_POST['placa_pod'];
+
+        $stmt_etat = $pdo->prepare("SELECT PLACA_OD, PLACA_DO FROM etaty WHERE NAZWA = :etat");
+        $stmt_etat->bindParam(':etat', $etat);
+        $stmt_etat->execute();
+        $widełki = $stmt_etat->fetch(PDO::FETCH_ASSOC);
+
+        if ($widełki) {
+            if ($placa_pod < $widełki['PLACA_OD']) {
+                $zapisano = "Nie";
+                $blad = "Tak";
+                $blad_placa_pod = "Płaca podstawowa jest mniejsza niż minimum dla etatu (" . $widełki['PLACA_OD'] . ")";
+            } else if (!empty($widełki['PLACA_DO']) && $placa_pod > $widełki['PLACA_DO']) {
+                $zapisano = "Nie";
+                $blad = "Tak";
+                $blad_placa_pod = "Płaca podstawowa jest większa niż maksimum dla etatu (" . $widełki['PLACA_DO'] . ")";
+            }
+        }
     }
 
 
