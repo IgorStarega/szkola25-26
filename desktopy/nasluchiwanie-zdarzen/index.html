@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Zadanie: addEventListener</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        input, button { padding: 5px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <input type="text" id="tekst" placeholder="Wpisz coś tutaj...">
+    <button type="button" id="sprawdz">Sprawdź długość</button>
+    <p id="wynik"></p>
+
+    <script>
+        const poleTekstowe = document.getElementById("tekst");
+        const przycisk = document.getElementById("sprawdz");
+        const akapitWynik = document.getElementById("wynik");
+
+        przycisk.addEventListener("click", function() {
+            
+            const tekst = poleTekstowe.value;
+
+            const dlugosc = tekst.length;
+
+            akapitWynik.textContent = "Liczba znaków: " + dlugosc;
+            
+        });
+    </script>
+
+</body>
+</html>
