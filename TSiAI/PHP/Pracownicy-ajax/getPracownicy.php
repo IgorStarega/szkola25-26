@@ -22,8 +22,8 @@ foreach($stmt as $row){
     $html .= '<td>'.$row['PLACA_POD'].'</td>';
     $html .= '<td>'.$row['PLACA_DOD'].'</td>';
     $html .= '<td>'.$row['ID_ZESP'].'</td>';
-    $html .= '<td><a href="edytuj/pracownik.php?id='.$row['ID_PRAC'].'"><button type="button" class="btn btn-outline-secondary me-2"><i class="bi bi-pencil-square"></i></button></a>';
-    $html .= '<button type="button" class="btn btn-outline-danger delete-btn" tabindex="0" data-bs-toggle="popover" data-bs-placement="top" data-bs-trigger="focus" data-bs-title="Potwierdź usunięcie" data-bs-content="<p class=\'mb-2\'>Czy na pewno chcesz usunąć pracownika o ID: '.$row['ID_PRAC'].'?</p><button type=\'button\' class=\'btn btn-danger btn-sm delete-btn\' data-id=\''.$row['ID_PRAC'].'\'>Usuń</button><button type=\'button\' class=\'btn btn-secondary btn-sm\' data-bs-dismiss=\'popover\'>Anuluj</button>"><i class="bi bi-trash3"></i></button></td>';
+    $html .= '<td><button type="button" class="btn btn-outline-secondary me-2" onclick="alert(\'edycja niedostępna w popup - użyj przycisku w wierszu\')"><i class="bi bi-pencil-square"></i></button>';
+    $html .= '<button type="button" class="btn btn-outline-danger" onclick="deleteWorker('.$row['ID_PRAC'].')"><i class="bi bi-trash3"></i></button></td>';
     $html .= '</tr>';
 }
 

@@ -1,3 +1,5 @@
+var workerModal;
+
 $(document).ready(function(){
     if($('#workersData').length) initAjaxWorkers();
     if($('#etatyData').length) initAjaxEtaty();
@@ -7,9 +9,14 @@ $(document).ready(function(){
 
 function initAjaxWorkers(){
     loadWorkers();
-
-    $(document).off('click', '#workersReset').on('click', '#workersReset', function(){
-        resetSearch();
+    
+    $(document).on('click', '#workersSearchBtn', function(){
+        loadWorkers({ search: $('#workersSearch').val() });
+    });
+    
+    $(document).on('click', '#workersReset', function(){
+        $('#workersSearch').val('');
+        loadWorkers();
     });
 }
 
@@ -20,7 +27,6 @@ function loadWorkers(data){
     $.ajax({ url: 'getPracownicy.php', method: 'POST', data: data })
         .done(function(response){
             $('#workersData').html(response);
-            initPopovers();
         });
 }
 
@@ -35,17 +41,13 @@ function resetSearch(){
 
 function initAjaxEtaty(){
     loadEtaty();
-
-    $(document).off('click', '#etatyReset').on('click', '#etatyReset', function(){
-        resetEtaty();
-    });
 }
 
-function loadEtaty(data){
+function loadEtaty(){
     var cols = $('#etatyData').closest('table').find('thead th').length;
     $('#etatyData').html('<tr><td colspan="'+cols+'"><div class="spinner-border text-primary d-block mx-auto" role="status"></div></td></tr>');
 
-    $.ajax({ url: 'getEtaty.php', method: 'POST', data: data })
+    $.ajax({ url: 'getEtaty.php', method: 'POST' })
         .done(function(response){
             $('#etatyData').html(response);
             initPopovers();
@@ -63,17 +65,13 @@ function resetEtaty(){
 
 function initAjaxZespoly(){
     loadZespoly();
-
-    $(document).off('click', '#zespolyReset').on('click', '#zespolyReset', function(){
-        resetZespoly();
-    });
 }
 
-function loadZespoly(data){
+function loadZespoly(){
     var cols = $('#zespolyData').closest('table').find('thead th').length;
     $('#zespolyData').html('<tr><td colspan="'+cols+'"><div class="spinner-border text-primary d-block mx-auto" role="status"></div></td></tr>');
 
-    $.ajax({ url: 'getZespoly.php', method: 'POST', data: data })
+    $.ajax({ url: 'getZespoly.php', method: 'POST' })
         .done(function(response){
             $('#zespolyData').html(response);
             initPopovers();
@@ -91,17 +89,13 @@ function resetZespoly(){
 
 function initAjaxPolaczone(){
     loadPolaczone();
-
-    $(document).off('click', '#polaczoneReset').on('click', '#polaczoneReset', function(){
-        resetPolaczone();
-    });
 }
 
-function loadPolaczone(data){
+function loadPolaczone(){
     var cols = $('#polaczoneData').closest('table').find('thead th').length;
     $('#polaczoneData').html('<tr><td colspan="'+cols+'"><div class="spinner-border text-primary d-block mx-auto" role="status"></div></td></tr>');
 
-    $.ajax({ url: 'getPolaczone.php', method: 'POST', data: data })
+    $.ajax({ url: 'getPolaczone.php', method: 'POST' })
         .done(function(response){
             $('#polaczoneData').html(response);
         });
@@ -123,44 +117,6 @@ function initPopovers(){
     });
 }
 
-$(document).off('click', '.delete-btn').on('click', '.delete-btn', function(e){
-    e.preventDefault();
-    var deleteId = $(this).data('id');
-    $.ajax({
-        url: 'deletePracownicy.php',
-        method: 'POST',
-        data: { delete_id: deleteId }
-    }).done(function(){
-        loadWorkers();
-    });
-});
-
-$(document).off('click', '.delete-etat-btn').on('click', '.delete-etat-btn', function(e){
-    e.preventDefault();
-    var deleteNazwa = $(this).data('nazwa');
-    $.ajax({
-        url: 'deleteEtaty.php',
-        method: 'POST',
-        data: { delete_nazwa: deleteNazwa }
-    }).done(function(){
-        loadEtaty();
-    });
-});
-
-$(document).off('click', '.delete-zespol-btn').on('click', '.delete-zespol-btn', function(e){
-    e.preventDefault();
-    var deleteId = $(this).data('id');
-    $.ajax({
-        url: 'deleteZespoly.php',
-        method: 'POST',
-        data: { delete_id: deleteId }
-    }).done(function(){
-        loadZespoly();
-    });
-});
-
-var workerModal;
-
 function openAddModal(){
     $.ajax({
         url: 'getWorkerForm.php',
@@ -172,7 +128,7 @@ function openAddModal(){
     });
 }
 
-function saveWorker(){
+function saveWorkerAdd(){
     var formData = {
         action: 'add',
         imie: $('#workerImie').val(),
@@ -198,4 +154,19 @@ function saveWorker(){
             $('#workerErrors').html('<div class="alert alert-danger">' + result.errors.join('<br>') + '</div>');
         }
     });
+}
+
+function deleteWorker(id){
+    if(confirm('Czy na pewno chcesz usunąć pracownika?')){
+        $.ajax({
+            url: 'getWorkerForm.php',
+            method: 'POST',
+            data: { action: 'delete', id: id }
+        }).done(function(response){
+            var result = JSON.parse(response);
+            if(result.success){
+                loadWorkers();
+            }
+        });
+    }
 }

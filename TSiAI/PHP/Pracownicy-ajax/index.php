@@ -32,7 +32,7 @@ require_once './database.php';
             <div class="d-flex flex-wrap justify-content-between align-items-center p-4 bg-light shadow-sm rounded my-4 gap-3">
                 <div class="input-group" style="max-width: 500px;">
                     <input id="workersSearch" type="text" class="form-control border-primary" name="search" value="" placeholder="Wpisz szukaną frazę..." />
-                    <button class="btn btn-primary" type="button" onclick="searchWorkers(); return false;">Szukaj</button>
+                    <button id="workersSearchBtn" class="btn btn-primary" type="button" onclick="searchWorkers(); return false;">Szukaj</button>
                     <input type="button" id="workersReset" class="btn btn-danger" value="Reset" onclick="resetSearch(); return false;" />
                 </div>
                 <div>

@@ -1,9 +1,9 @@
 <?php
 require_once 'database.php';
 
-header('Content-Type: application/json');
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    header('Content-Type: application/json');
+    
     if ($_POST['action'] === 'add') {
         $imie = $_POST['imie'] ?? '';
         $nazwisko = $_POST['nazwisko'] ?? '';
@@ -66,88 +66,103 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         }
         exit;
     }
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $stmt = $pdo->prepare('SELECT NAZWA FROM etaty');
-    $stmt->execute();
-    $etaty = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    $stmt = $pdo->prepare('SELECT ID_PRAC, IMIE, NAZWISKO FROM pracownicy');
-    $stmt->execute();
-    $pracownicy = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    $stmt = $pdo->prepare('SELECT ID_ZESP, NAZWA FROM zespoly');
-    $stmt->execute();
-    $zespoly = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    echo '<form id="workerForm">';
-    echo '<div class="modal-header">';
-    echo '<h5 class="modal-title">Dodaj pracownika</h5>';
-    echo '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
-    echo '</div>';
-    echo '<div class="modal-body">';
     
-    echo '<div class="form-floating mb-3">';
-    echo '<input type="text" name="imie" class="form-control" id="workerImie" placeholder="Jan">';
-    echo '<label for="workerImie">Imię</label>';
-    echo '</div>';
+    if ($_POST['action'] === 'delete') {
+        try {
+            $stmt = $pdo->prepare("UPDATE pracownicy SET ID_SZEFA = NULL WHERE ID_SZEFA = :ID_SZEFA");
+            $stmt->bindParam(':ID_SZEFA', $_POST['id'], PDO::PARAM_INT);
+            $stmt->execute();
 
-    echo '<div class="form-floating mb-3">';
-    echo '<input type="text" name="nazwisko" class="form-control" id="workerNazwisko" placeholder="Kowalski">';
-    echo '<label for="workerNazwisko">Nazwisko</label>';
-    echo '</div>';
-
-    echo '<div class="form-floating mb-3">';
-    echo '<select class="form-select mb-3" id="workerEtat" name="etat">';
-    echo '<option value="">Wybierz etat</option>';
-    foreach ($etaty as $row) {
-        echo '<option value="' . htmlspecialchars($row['NAZWA']) . '">' . htmlspecialchars($row['NAZWA']) . '</option>';
+            $stmt = $pdo->prepare("DELETE FROM pracownicy WHERE ID_PRAC = :ID_PRAC");
+            $stmt->bindParam(':ID_PRAC', $_POST['id'], PDO::PARAM_INT);
+            $stmt->execute();
+            
+            echo json_encode(['success' => true]);
+        } catch (PDOException $e) {
+            echo json_encode(['errors' => [$e->getMessage()]]);
+        }
+        exit;
     }
-    echo '</select>';
-    echo '<label for="workerEtat">Etat</label>';
-    echo '</div>';
-
-    echo '<div class="form-floating mb-3">';
-    echo '<select class="form-select mb-3" id="workerSzef" name="szef">';
-    echo '<option value="">Brak szefa</option>';
-    foreach ($pracownicy as $row) {
-        echo '<option value="' . $row['ID_PRAC'] . '">' . htmlspecialchars($row['IMIE'] . ' ' . $row['NAZWISKO']) . '</option>';
-    }
-    echo '</select>';
-    echo '<label for="workerSzef">Szef</label>';
-    echo '</div>';
-
-    echo '<div class="form-floating mb-3">';
-    echo '<select class="form-select mb-3" id="workerZespol" name="zespol">';
-    echo '<option value="">Wybierz zespół</option>';
-    foreach ($zespoly as $row) {
-        echo '<option value="' . $row['ID_ZESP'] . '">' . htmlspecialchars($row['NAZWA']) . '</option>';
-    }
-    echo '</select>';
-    echo '<label for="workerZespol">Zespół</label>';
-    echo '</div>';
-
-    echo '<div class="form-floating mb-3">';
-    echo '<input type="date" class="form-control" id="workerData" name="data_zatrudnienia">';
-    echo '<label for="workerData">Data zatrudnienia</label>';
-    echo '</div>';
-
-    echo '<div class="form-floating mb-3">';
-    echo '<input type="number" class="form-control" id="workerPlaca" name="placa_pod" placeholder="1000" min="0">';
-    echo '<label for="workerPlaca">Płaca podstawowa</label>';
-    echo '</div>';
-
-    echo '<div class="form-floating mb-3">';
-    echo '<input type="number" class="form-control" id="workerPlacaDod" name="placa_dod" placeholder="0" min="0">';
-    echo '<label for="workerPlacaDod">Płaca dodatkowa</label>';
-    echo '</div>';
-
-    echo '<div id="workerErrors"></div>';
-    echo '</div>';
-    echo '<div class="modal-footer">';
-    echo '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>';
-    echo '<button type="button" class="btn btn-success" onclick="saveWorker(); return false;">Zapisz</button>';
-    echo '</div>';
-    echo '</form>';
 }
+
+$stmt = $pdo->prepare('SELECT NAZWA FROM etaty');
+$stmt->execute();
+$etaty = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$stmt = $pdo->prepare('SELECT ID_PRAC, IMIE, NAZWISKO FROM pracownicy');
+$stmt->execute();
+$pracownicy = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$stmt = $pdo->prepare('SELECT ID_ZESP, NAZWA FROM zespoly');
+$stmt->execute();
+$zespoly = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+<form id="workerFormModal">
+<div class="modal-header">
+<h5 class="modal-title">Dodaj pracownika</h5>
+<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+
+<div class="form-floating mb-3">
+<input type="text" name="imie" class="form-control" id="workerImie" placeholder="Jan">
+<label for="workerImie">Imię</label>
+</div>
+
+<div class="form-floating mb-3">
+<input type="text" name="nazwisko" class="form-control" id="workerNazwisko" placeholder="Kowalski">
+<label for="workerNazwisko">Nazwisko</label>
+</div>
+
+<div class="form-floating mb-3">
+<select class="form-select mb-3" id="workerEtat" name="etat">
+<option value="">Wybierz etat</option>
+<?php foreach ($etaty as $row): ?>
+<option value="<?php echo htmlspecialchars($row['NAZWA']); ?>"><?php echo htmlspecialchars($row['NAZWA']); ?></option>
+<?php endforeach; ?>
+</select>
+<label for="workerEtat">Etat</label>
+</div>
+
+<div class="form-floating mb-3">
+<select class="form-select mb-3" id="workerSzef" name="szef">
+<option value="">Brak szefa</option>
+<?php foreach ($pracownicy as $row): ?>
+<option value="<?php echo $row['ID_PRAC']; ?>"><?php echo htmlspecialchars($row['IMIE'] . ' ' . $row['NAZWISKO']); ?></option>
+<?php endforeach; ?>
+</select>
+<label for="workerSzef">Szef</label>
+</div>
+
+<div class="form-floating mb-3">
+<select class="form-select mb-3" id="workerZespol" name="zespol">
+<option value="">Wybierz zespół</option>
+<?php foreach ($zespoly as $row): ?>
+<option value="<?php echo $row['ID_ZESP']; ?>"><?php echo htmlspecialchars($row['NAZWA']); ?></option>
+<?php endforeach; ?>
+</select>
+<label for="workerZespol">Zespół</label>
+</div>
+
+<div class="form-floating mb-3">
+<input type="date" class="form-control" id="workerData" name="data_zatrudnienia">
+<label for="workerData">Data zatrudnienia</label>
+</div>
+
+<div class="form-floating mb-3">
+<input type="number" class="form-control" id="workerPlaca" name="placa_pod" placeholder="1000" min="0">
+<label for="workerPlaca">Płaca podstawowa</label>
+</div>
+
+<div class="form-floating mb-3">
+<input type="number" class="form-control" id="workerPlacaDod" name="placa_dod" placeholder="0" min="0">
+<label for="workerPlacaDod">Płaca dodatkowa</label>
+</div>
+
+<div id="workerErrors"></div>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+<button type="button" class="btn btn-success" onclick="saveWorkerAdd(); return false;">Zapisz</button>
+</div>
+</form>
