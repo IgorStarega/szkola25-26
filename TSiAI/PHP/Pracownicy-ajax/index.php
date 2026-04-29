@@ -36,7 +36,7 @@ require_once './database.php';
                     <input type="button" id="workersReset" class="btn btn-danger" value="Reset" onclick="resetSearch(); return false;" />
                 </div>
                 <div>
-                    <a href="dodaj/pracownik.php" class="btn btn-success btn-lg shadow-sm">Dodaj nowego pracownika</a>
+                    <button type="button" class="btn btn-success btn-lg shadow-sm" onclick="openAddModal(); return false;">Dodaj nowego pracownika</button>
                 </div>
             </div>
         </form>
@@ -61,6 +61,13 @@ require_once './database.php';
                     </tbody>
                 </table>
 
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="workerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" id="workerModalContent">
             </div>
         </div>
     </div>

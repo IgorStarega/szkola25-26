@@ -158,3 +158,44 @@ $(document).off('click', '.delete-zespol-btn').on('click', '.delete-zespol-btn',
         loadZespoly();
     });
 });
+
+var workerModal;
+
+function openAddModal(){
+    $.ajax({
+        url: 'getWorkerForm.php',
+        method: 'GET'
+    }).done(function(response){
+        $('#workerModalContent').html(response);
+        workerModal = new bootstrap.Modal(document.getElementById('workerModal'));
+        workerModal.show();
+    });
+}
+
+function saveWorker(){
+    var formData = {
+        action: 'add',
+        imie: $('#workerImie').val(),
+        nazwisko: $('#workerNazwisko').val(),
+        etat: $('#workerEtat').val(),
+        szef: $('#workerSzef').val(),
+        zespol: $('#workerZespol').val(),
+        data_zatrudnienia: $('#workerData').val(),
+        placa_pod: $('#workerPlaca').val(),
+        placa_dod: $('#workerPlacaDod').val()
+    };
+    
+    $.ajax({
+        url: 'getWorkerForm.php',
+        method: 'POST',
+        data: formData
+    }).done(function(response){
+        var result = JSON.parse(response);
+        if(result.success){
+            workerModal.hide();
+            loadWorkers();
+        } else if(result.errors){
+            $('#workerErrors').html('<div class="alert alert-danger">' + result.errors.join('<br>') + '</div>');
+        }
+    });
+}
