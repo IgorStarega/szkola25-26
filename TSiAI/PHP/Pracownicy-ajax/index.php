@@ -11,17 +11,8 @@ require_once './database.php';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <title>Bazy danych - Pracownicy</title>
-    <style>
-        .page-loader{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:9999}
-        .spinner{width:50px;height:50px;border:5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite}
-        @keyframes spin{to{transform:rotate(360deg)}}
-    </style>
 </head>
 <body>
-    <div id="page-loader" class="page-loader">
-        <div class="spinner"></div>
-    </div>
-
     <div class="container">
         <ul class="nav nav-tabs mt-2">
             <li class="nav-item">

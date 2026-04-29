@@ -14,17 +14,13 @@ function initAjaxWorkers(){
 }
 
 function loadWorkers(data){
-    $('#page-loader').css('display', 'flex');
     var cols = $('#workersData').closest('table').find('thead th').length;
-    $('#workersData').html('<tr><td colspan="'+cols+'"><div class="spinner-border text-primary" role="status"></div></td></tr>');
+    $('#workersData').html('<tr><td colspan="'+cols+'"><div class="spinner-border text-primary d-block mx-auto" role="status"></div></td></tr>');
 
     $.ajax({ url: 'getPracownicy.php', method: 'POST', data: data })
         .done(function(response){
             $('#workersData').html(response);
             initPopovers();
-        })
-        .always(function(){
-            $('#page-loader').css('display', 'none');
         });
 }
 
@@ -46,17 +42,13 @@ function initAjaxEtaty(){
 }
 
 function loadEtaty(data){
-    $('#page-loader').css('display', 'flex');
     var cols = $('#etatyData').closest('table').find('thead th').length;
-    $('#etatyData').html('<tr><td colspan="'+cols+'"><div class="spinner-border text-primary" role="status"></div></td></tr>');
+    $('#etatyData').html('<tr><td colspan="'+cols+'"><div class="spinner-border text-primary d-block mx-auto" role="status"></div></td></tr>');
 
     $.ajax({ url: 'getEtaty.php', method: 'POST', data: data })
         .done(function(response){
             $('#etatyData').html(response);
             initPopovers();
-        })
-        .always(function(){
-            $('#page-loader').css('display', 'none');
         });
 }
 
@@ -78,17 +70,13 @@ function initAjaxZespoly(){
 }
 
 function loadZespoly(data){
-    $('#page-loader').css('display', 'flex');
     var cols = $('#zespolyData').closest('table').find('thead th').length;
-    $('#zespolyData').html('<tr><td colspan="'+cols+'"><div class="spinner-border text-primary" role="status"></div></td></tr>');
+    $('#zespolyData').html('<tr><td colspan="'+cols+'"><div class="spinner-border text-primary d-block mx-auto" role="status"></div></td></tr>');
 
     $.ajax({ url: 'getZespoly.php', method: 'POST', data: data })
         .done(function(response){
             $('#zespolyData').html(response);
             initPopovers();
-        })
-        .always(function(){
-            $('#page-loader').css('display', 'none');
         });
 }
 
@@ -110,16 +98,12 @@ function initAjaxPolaczone(){
 }
 
 function loadPolaczone(data){
-    $('#page-loader').css('display', 'flex');
     var cols = $('#polaczoneData').closest('table').find('thead th').length;
-    $('#polaczoneData').html('<tr><td colspan="'+cols+'"><div class="spinner-border text-primary" role="status"></div></td></tr>');
+    $('#polaczoneData').html('<tr><td colspan="'+cols+'"><div class="spinner-border text-primary d-block mx-auto" role="status"></div></td></tr>');
 
     $.ajax({ url: 'getPolaczone.php', method: 'POST', data: data })
         .done(function(response){
             $('#polaczoneData').html(response);
-        })
-        .always(function(){
-            $('#page-loader').css('display', 'none');
         });
 }
 
