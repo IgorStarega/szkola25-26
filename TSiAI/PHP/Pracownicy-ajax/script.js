@@ -1,39 +1,135 @@
 $(document).ready(function(){
-
-    if($('#workersData').length) initAjaxTable('workersData', 'getPracownicy.php', true);
-    if($('#etatyData').length) initAjaxTable('etatyData', 'getEtaty.php', true);
-    if($('#zespolyData').length) initAjaxTable('zespolyData', 'getZespoly.php', true);
-    if($('#polaczoneData').length) initAjaxTable('polaczoneData', 'getPolaczone.php', false);
-
+    if($('#workersData').length) initAjaxWorkers();
+    if($('#etatyData').length) initAjaxEtaty();
+    if($('#zespolyData').length) initAjaxZespoly();
+    if($('#polaczoneData').length) initAjaxPolaczone();
 });
 
-function initAjaxTable(targetId, url, needsPopovers){
-    loadData(targetId, url, needsPopovers);
+function initAjaxWorkers(){
+    loadWorkers();
 
-    $('#form').on('submit', function(e){
-        e.preventDefault();
-        loadData(targetId, url, needsPopovers, { search: $('#search').val() });
-    });
-
-    $('#resetBtn').on('click', function(){
-        $('#search').val('');
-        loadData(targetId, url, needsPopovers);
+    $(document).off('click', '#workersReset').on('click', '#workersReset', function(){
+        resetSearch();
     });
 }
 
-function loadData(targetId, url, needsPopovers, data){
+function loadWorkers(data){
     $('#page-loader').css('display', 'flex');
-    var cols = $('#' + targetId).closest('table').find('thead th').length;
-    $('#' + targetId).html('<tr><td colspan="'+cols+'"><div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></td></tr>');
+    var cols = $('#workersData').closest('table').find('thead th').length;
+    $('#workersData').html('<tr><td colspan="'+cols+'"><div class="spinner-border text-primary" role="status"></div></td></tr>');
 
-    $.ajax({ url: url, method: 'POST', data: data })
+    $.ajax({ url: 'getPracownicy.php', method: 'POST', data: data })
         .done(function(response){
-            $('#' + targetId).html(response);
-            if(needsPopovers) initPopovers();
+            $('#workersData').html(response);
+            initPopovers();
         })
         .always(function(){
             $('#page-loader').css('display', 'none');
         });
+}
+
+function searchWorkers(){
+    loadWorkers({ search: $('#workersSearch').val() });
+}
+
+function resetSearch(){
+    $('#workersSearch').val('');
+    loadWorkers();
+}
+
+function initAjaxEtaty(){
+    loadEtaty();
+
+    $(document).off('click', '#etatyReset').on('click', '#etatyReset', function(){
+        resetEtaty();
+    });
+}
+
+function loadEtaty(data){
+    $('#page-loader').css('display', 'flex');
+    var cols = $('#etatyData').closest('table').find('thead th').length;
+    $('#etatyData').html('<tr><td colspan="'+cols+'"><div class="spinner-border text-primary" role="status"></div></td></tr>');
+
+    $.ajax({ url: 'getEtaty.php', method: 'POST', data: data })
+        .done(function(response){
+            $('#etatyData').html(response);
+            initPopovers();
+        })
+        .always(function(){
+            $('#page-loader').css('display', 'none');
+        });
+}
+
+function searchEtaty(){
+    loadEtaty({ search: $('#etatySearch').val() });
+}
+
+function resetEtaty(){
+    $('#etatySearch').val('');
+    loadEtaty();
+}
+
+function initAjaxZespoly(){
+    loadZespoly();
+
+    $(document).off('click', '#zespolyReset').on('click', '#zespolyReset', function(){
+        resetZespoly();
+    });
+}
+
+function loadZespoly(data){
+    $('#page-loader').css('display', 'flex');
+    var cols = $('#zespolyData').closest('table').find('thead th').length;
+    $('#zespolyData').html('<tr><td colspan="'+cols+'"><div class="spinner-border text-primary" role="status"></div></td></tr>');
+
+    $.ajax({ url: 'getZespoly.php', method: 'POST', data: data })
+        .done(function(response){
+            $('#zespolyData').html(response);
+            initPopovers();
+        })
+        .always(function(){
+            $('#page-loader').css('display', 'none');
+        });
+}
+
+function searchZespoly(){
+    loadZespoly({ search: $('#zespolySearch').val() });
+}
+
+function resetZespoly(){
+    $('#zespolySearch').val('');
+    loadZespoly();
+}
+
+function initAjaxPolaczone(){
+    loadPolaczone();
+
+    $(document).off('click', '#polaczoneReset').on('click', '#polaczoneReset', function(){
+        resetPolaczone();
+    });
+}
+
+function loadPolaczone(data){
+    $('#page-loader').css('display', 'flex');
+    var cols = $('#polaczoneData').closest('table').find('thead th').length;
+    $('#polaczoneData').html('<tr><td colspan="'+cols+'"><div class="spinner-border text-primary" role="status"></div></td></tr>');
+
+    $.ajax({ url: 'getPolaczone.php', method: 'POST', data: data })
+        .done(function(response){
+            $('#polaczoneData').html(response);
+        })
+        .always(function(){
+            $('#page-loader').css('display', 'none');
+        });
+}
+
+function searchPolaczone(){
+    loadPolaczone({ search: $('#polaczoneSearch').val() });
+}
+
+function resetPolaczone(){
+    $('#polaczoneSearch').val('');
+    loadPolaczone();
 }
 
 function initPopovers(){
@@ -43,7 +139,7 @@ function initPopovers(){
     });
 }
 
-$(document).on('click', '.delete-btn', function(e){
+$(document).off('click', '.delete-btn').on('click', '.delete-btn', function(e){
     e.preventDefault();
     var deleteId = $(this).data('id');
     $.ajax({
@@ -51,6 +147,30 @@ $(document).on('click', '.delete-btn', function(e){
         method: 'POST',
         data: { delete_id: deleteId }
     }).done(function(){
-        loadData('workersData', 'getPracownicy.php', true);
+        loadWorkers();
+    });
+});
+
+$(document).off('click', '.delete-etat-btn').on('click', '.delete-etat-btn', function(e){
+    e.preventDefault();
+    var deleteNazwa = $(this).data('nazwa');
+    $.ajax({
+        url: 'deleteEtaty.php',
+        method: 'POST',
+        data: { delete_nazwa: deleteNazwa }
+    }).done(function(){
+        loadEtaty();
+    });
+});
+
+$(document).off('click', '.delete-zespol-btn').on('click', '.delete-zespol-btn', function(e){
+    e.preventDefault();
+    var deleteId = $(this).data('id');
+    $.ajax({
+        url: 'deleteZespoly.php',
+        method: 'POST',
+        data: { delete_id: deleteId }
+    }).done(function(){
+        loadZespoly();
     });
 });

@@ -21,7 +21,6 @@ require_once './database.php';
     <div id="page-loader" class="page-loader">
         <div class="spinner"></div>
     </div>
-    <script src="script.js"></script>
 
     <div class="container">
         <ul class="nav nav-tabs mt-2">
@@ -38,12 +37,12 @@ require_once './database.php';
                 <a class="nav-link" href="polaczone.php">Połączone</a>
             </li>
         </ul>
-        <form id="form" action="" method="post">
+        <form id="workersForm">
             <div class="d-flex flex-wrap justify-content-between align-items-center p-4 bg-light shadow-sm rounded my-4 gap-3">
                 <div class="input-group" style="max-width: 500px;">
-                    <input id="search" type="text" class="form-control border-primary" name="search" value="" placeholder="Wpisz szukaną frazę..." />
-                    <button class="btn btn-primary" type="submit">Szukaj</button>
-                    <input type="button" id="resetBtn" class="btn btn-danger" value="Reset" />
+                    <input id="workersSearch" type="text" class="form-control border-primary" name="search" value="" placeholder="Wpisz szukaną frazę..." />
+                    <button class="btn btn-primary" type="button" onclick="searchWorkers(); return false;">Szukaj</button>
+                    <input type="button" id="workersReset" class="btn btn-danger" value="Reset" onclick="resetSearch(); return false;" />
                 </div>
                 <div>
                     <a href="dodaj/pracownik.php" class="btn btn-success btn-lg shadow-sm">Dodaj nowego pracownika</a>
@@ -77,18 +76,6 @@ require_once './database.php';
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-            var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-                return new bootstrap.Popover(popoverTriggerEl, {
-                    trigger: 'focus',
-                    html: true,
-                    sanitize: false
-                });
-            });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

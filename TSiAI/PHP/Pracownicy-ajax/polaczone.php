@@ -10,7 +10,7 @@ require_once 'database.php';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <title>Bazy danych - Pracownicy</title>
     <style>
-        .page-loader{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:9999}
+        .page-loader{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:9999}
         .spinner{width:50px;height:50px;border:5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite}
         @keyframes spin{to{transform:rotate(360deg)}}
     </style>
@@ -19,65 +19,6 @@ require_once 'database.php';
     <div id="page-loader" class="page-loader">
         <div class="spinner"></div>
     </div>
-    <script>
-        window.addEventListener('load', function() {
-            document.getElementById('page-loader').style.display = 'none';
-        });
-    </script>
-
-
-    <?php
-        if(isset($_POST['submit']) && $_POST['search']!=''){
-            $stmt = $pdo->prepare("SELECT
-                pracownicy.ID_PRAC,
-                pracownicy.IMIE,
-                pracownicy.NAZWISKO,
-                pracownicy.ETAT,
-                pracownicy.PLACA_POD,
-                pracownicy.PLACA_DOD,
-                pracownicy.ZATRUDNIONY,
-                CONCAT(p.IMIE, ' ', p.NAZWISKO) AS SZEF,
-                zespoly.NAZWA AS ZESPOL
-            FROM pracownicy
-            LEFT JOIN zespoly ON pracownicy.ID_ZESP = zespoly.ID_ZESP
-            LEFT JOIN pracownicy AS p ON pracownicy.ID_SZEFA = p.ID_PRAC
-            WHERE pracownicy.IMIE LIKE :imie OR pracownicy.NAZWISKO LIKE :nazwisko");
-            $stmt -> bindValue(':imie', '%'.$_POST['search'].'%', PDO::PARAM_STR);
-            $stmt -> bindValue(':nazwisko', '%'.$_POST['search'].'%', PDO::PARAM_STR);
-            $stmt->execute();
-        }
-        else if (isset($_POST['reset'])){
-            $stmt = $pdo->query("SELECT
-                pracownicy.ID_PRAC,
-                pracownicy.IMIE,
-                pracownicy.NAZWISKO,
-                pracownicy.ETAT,
-                pracownicy.PLACA_POD,
-                pracownicy.PLACA_DOD,
-                pracownicy.ZATRUDNIONY,
-                CONCAT(p.IMIE, ' ', p.NAZWISKO) AS SZEF,
-                zespoly.NAZWA AS ZESPOL
-            FROM pracownicy
-            LEFT JOIN zespoly ON pracownicy.ID_ZESP = zespoly.ID_ZESP
-            LEFT JOIN pracownicy AS p ON pracownicy.ID_SZEFA = p.ID_PRAC");
-        }
-        else
-        {
-            $stmt = $pdo->query("SELECT
-                pracownicy.ID_PRAC,
-                pracownicy.IMIE,
-                pracownicy.NAZWISKO,
-                pracownicy.ETAT,
-                pracownicy.PLACA_POD,
-                pracownicy.PLACA_DOD,
-                pracownicy.ZATRUDNIONY,
-                CONCAT(p.IMIE, ' ', p.NAZWISKO) AS SZEF,
-                zespoly.NAZWA AS ZESPOL
-            FROM pracownicy
-            LEFT JOIN zespoly ON pracownicy.ID_ZESP = zespoly.ID_ZESP
-            LEFT JOIN pracownicy AS p ON pracownicy.ID_SZEFA = p.ID_PRAC");
-        }
-    ?>
 
     <div class="container">
         <ul class="nav nav-tabs mt-2">
@@ -94,12 +35,12 @@ require_once 'database.php';
                 <a class="nav-link active" href="polaczone.php">Połączone</a>
             </li>
         </ul>
-        <form action="" method="post">
+        <form id="polaczoneForm">
             <div class="d-flex flex-wrap justify-content-start align-items-center p-4 bg-light shadow-sm rounded my-4 gap-3">
                 <div class="input-group" style="max-width: 500px;">
-                    <input type="text" class="form-control border-primary" name="search" value="<?php echo isset($_POST['reset']) ? '' : (isset($_POST['search']) ? htmlspecialchars($_POST['search']) : ''); ?>" placeholder="Wpisz szukaną frazę..." />
-                    <button class="btn btn-primary" type="submit" name="submit">Szukaj</button>
-                    <input type="submit" class="btn btn-danger" name="reset" value="Reset" />
+                    <input id="polaczoneSearch" type="text" class="form-control border-primary" name="search" value="" placeholder="Wpisz szukaną frazę..." />
+                    <button class="btn btn-primary" type="button" onclick="searchPolaczone(); return false;">Szukaj</button>
+                    <input type="button" id="polaczoneReset" class="btn btn-danger" value="Reset" onclick="resetPolaczone(); return false;" />
                 </div>
             </div>
         </form>
@@ -120,22 +61,7 @@ require_once 'database.php';
                         <th>Zespół</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <?php
-                    foreach ($stmt as $row){
-                        echo '<tr>';
-                        echo '<td>'.$row['ID_PRAC'].'</td>';
-                        echo '<td>'.$row['IMIE'].'</td>';
-                        echo '<td>'.$row['NAZWISKO'].'</td>';
-                        echo '<td>'.$row['ETAT'].'</td>';
-                        echo '<td>'.$row['PLACA_POD'].'</td>';
-                        echo '<td>'.$row['PLACA_DOD'].'</td>';
-                        echo '<td>'.$row['ZATRUDNIONY'].'</td>';
-                        echo '<td>'.$row['SZEF'].'</td>';
-                        echo '<td>'.$row['ZESPOL'].'</td>';
-                        echo '</tr>';
-                    }
-                    ?>
+                    <tbody id="polaczoneData">
                     </tbody>
                 </table>
 
@@ -144,6 +70,8 @@ require_once 'database.php';
     </div>
 
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="script.js"></script>
 </body>
 </html>

@@ -17,7 +17,7 @@ foreach($stmt as $row){
     $html .= '<td>'.$row['NAZWA'].'</td>';
     $html .= '<td>'.$row['ADRES'].'</td>';
     $html .= '<td><a href="edytuj/zespol.php?id='.$row['ID_ZESP'].'"><button type="button" class="btn btn-outline-secondary me-2"><i class="bi bi-pencil-square"></i></button></a>';
-    $html .= '<button type="button" class="btn btn-outline-danger" tabindex="0" data-bs-toggle="popover" data-bs-placement="top" data-bs-trigger="focus" data-bs-title="Potwierdź usunięcie" data-bs-content="<p class=\'mb-2\'>Czy na pewno chcesz usunąć zespół o ID: '.$row['ID_ZESP'].'?</p><form method=\'post\' class=\'d-inline\'><input type=\'hidden\' name=\'delete_id\' value=\''.$row['ID_ZESP'].'\'><button type=\'submit\' name=\'delete\' class=\'btn btn-danger btn-sm\'>Usuń</button></form><button type=\'button\' class=\'btn btn-secondary btn-sm\' data-bs-dismiss=\'popover\'>Anuluj</button>"><i class="bi bi-trash3"></i></button></td>';
+    $html .= '<button type="button" class="btn btn-outline-danger delete-zespol-btn" tabindex="0" data-bs-toggle="popover" data-bs-placement="top" data-bs-trigger="focus" data-bs-title="Potwierdź usunięcie" data-bs-content="<p class=\'mb-2\'>Czy na pewno chcesz usunąć zespół o ID: '.$row['ID_ZESP'].'?</p><button type=\'button\' class=\'btn btn-danger btn-sm delete-zespol-btn\' data-id=\''.$row['ID_ZESP'].'\'>Usuń</button><button type=\'button\' class=\'btn btn-secondary btn-sm\' data-bs-dismiss=\'popover\'>Anuluj</button>"><i class="bi bi-trash3"></i></button></td>';
     $html .= '</tr>';
 }
 
