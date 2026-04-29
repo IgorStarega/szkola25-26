@@ -42,3 +42,15 @@ function initPopovers(){
         return new bootstrap.Popover(el, { trigger: 'focus', html: true, sanitize: false });
     });
 }
+
+$(document).on('click', '.delete-btn', function(e){
+    e.preventDefault();
+    var deleteId = $(this).data('id');
+    $.ajax({
+        url: 'deletePracownicy.php',
+        method: 'POST',
+        data: { delete_id: deleteId }
+    }).done(function(){
+        loadData('workersData', 'getPracownicy.php', true);
+    });
+});
