@@ -13,56 +13,6 @@ require_once 'database.php';
 <body>
 
     <?php
-        if(isset($_POST['submit']) && $_POST['search']!=''){
-            $stmt = $pdo->prepare("SELECT
-                pracownicy.ID_PRAC,
-                pracownicy.IMIE,
-                pracownicy.NAZWISKO,
-                pracownicy.ETAT,
-                pracownicy.PLACA_POD,
-                pracownicy.PLACA_DOD,
-                pracownicy.ZATRUDNIONY,
-                CONCAT(p.IMIE, ' ', p.NAZWISKO) AS SZEF,
-                zespoly.NAZWA AS ZESPOL
-            FROM pracownicy
-            LEFT JOIN zespoly ON pracownicy.ID_ZESP = zespoly.ID_ZESP
-            LEFT JOIN pracownicy AS p ON pracownicy.ID_SZEFA = p.ID_PRAC
-            WHERE pracownicy.IMIE LIKE :imie OR pracownicy.NAZWISKO LIKE :nazwisko");
-            $stmt -> bindValue(':imie', '%'.$_POST['search'].'%', PDO::PARAM_STR);
-            $stmt -> bindValue(':nazwisko', '%'.$_POST['search'].'%', PDO::PARAM_STR);
-            $stmt->execute();
-        }
-        else if (isset($_POST['reset'])){
-            $stmt = $pdo->query("SELECT
-                pracownicy.ID_PRAC,
-                pracownicy.IMIE,
-                pracownicy.NAZWISKO,
-                pracownicy.ETAT,
-                pracownicy.PLACA_POD,
-                pracownicy.PLACA_DOD,
-                pracownicy.ZATRUDNIONY,
-                CONCAT(p.IMIE, ' ', p.NAZWISKO) AS SZEF,
-                zespoly.NAZWA AS ZESPOL
-            FROM pracownicy
-            LEFT JOIN zespoly ON pracownicy.ID_ZESP = zespoly.ID_ZESP
-            LEFT JOIN pracownicy AS p ON pracownicy.ID_SZEFA = p.ID_PRAC");
-        }
-        else
-        {
-            $stmt = $pdo->query("SELECT
-                pracownicy.ID_PRAC,
-                pracownicy.IMIE,
-                pracownicy.NAZWISKO,
-                pracownicy.ETAT,
-                pracownicy.PLACA_POD,
-                pracownicy.PLACA_DOD,
-                pracownicy.ZATRUDNIONY,
-                CONCAT(p.IMIE, ' ', p.NAZWISKO) AS SZEF,
-                zespoly.NAZWA AS ZESPOL
-            FROM pracownicy
-            LEFT JOIN zespoly ON pracownicy.ID_ZESP = zespoly.ID_ZESP
-            LEFT JOIN pracownicy AS p ON pracownicy.ID_SZEFA = p.ID_PRAC");
-        }
     ?>
 
     <div class="container">
@@ -80,12 +30,12 @@ require_once 'database.php';
                 <a class="nav-link active" href="polaczone.php">Połączone</a>
             </li>
         </ul>
-        <form action="" method="post">
+        <form id="searchForm">
             <div class="d-flex flex-wrap justify-content-start align-items-center p-4 bg-light shadow-sm rounded my-4 gap-3">
                 <div class="input-group" style="max-width: 500px;">
-                    <input type="text" class="form-control border-primary" name="search" value="<?php echo isset($_POST['reset']) ? '' : (isset($_POST['search']) ? htmlspecialchars($_POST['search']) : ''); ?>" placeholder="Wpisz szukaną frazę..." />
-                    <button class="btn btn-primary" type="submit" name="submit">Szukaj</button>
-                    <input type="submit" class="btn btn-danger" name="reset" value="Reset" />
+                    <input type="text" class="form-control border-primary" id="searchInput" placeholder="Wpisz szukaną frazę..." />
+                    <button class="btn btn-primary" type="submit">Szukaj</button>
+                    <button type="button" class="btn btn-danger" id="resetBtn">Reset</button>
                 </div>
             </div>
         </form>
@@ -106,22 +56,7 @@ require_once 'database.php';
                         <th>Zespół</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <?php
-                    foreach ($stmt as $row){
-                        echo '<tr>';
-                        echo '<td>'.$row['ID_PRAC'].'</td>';
-                        echo '<td>'.$row['IMIE'].'</td>';
-                        echo '<td>'.$row['NAZWISKO'].'</td>';
-                        echo '<td>'.$row['ETAT'].'</td>';
-                        echo '<td>'.$row['PLACA_POD'].'</td>';
-                        echo '<td>'.$row['PLACA_DOD'].'</td>';
-                        echo '<td>'.$row['ZATRUDNIONY'].'</td>';
-                        echo '<td>'.$row['SZEF'].'</td>';
-                        echo '<td>'.$row['ZESPOL'].'</td>';
-                        echo '</tr>';
-                    }
-                    ?>
+                    <tbody id="polaczoneData">
                     </tbody>
                 </table>
 
@@ -131,5 +66,41 @@ require_once 'database.php';
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            getPolaczone();
+            
+            $('#searchForm').on('submit', function(e) {
+                e.preventDefault();
+                getPolaczoneFilter($('#searchInput').val());
+            });
+
+            $('#resetBtn').on('click', function() {
+                $('#searchInput').val('');
+                getPolaczone();
+            });
+        });
+
+        function getPolaczone() {
+            $('#polaczoneData').html('<tr><td colspan="9" class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></td></tr>');
+            $.ajax({
+                url: "getPolaczone.php",
+                method: 'POST'
+            }).done(function(data) {
+                $('#polaczoneData').html(data);
+            });
+        }
+
+        function getPolaczoneFilter(search) {
+            $.ajax({
+                url: "getPolaczoneFilter.php",
+                method: 'POST',
+                data: { search: search }
+            }).done(function(data) {
+                $('#polaczoneData').html(data);
+            });
+        }
+    </script>
 </body>
 </html> 

@@ -1,15 +1,33 @@
 $(document).ready(function(){
-    getWorkers();
-    loadFormData();
+    if ($('#workersData').length) {
+        getWorkers();
+        loadFormData();
+    }
 
     $('#searchForm').on('submit', function(e) {
         e.preventDefault();
-        getWorkersFilter($('#searchInput').val());
+        if ($('#workersData').length) {
+            getWorkersFilter($('#searchInput').val());
+        } else if ($('#etatyData').length) {
+            getEtatyFilter($('#searchInput').val());
+        } else if ($('#zespolyData').length) {
+            getZespolyFilter($('#searchInput').val());
+        } else if ($('#polaczoneData').length) {
+            getPolaczoneFilter($('#searchInput').val());
+        }
     });
 
     $('#resetBtn').on('click', function() {
         $('#searchInput').val('');
-        getWorkers();
+        if ($('#workersData').length) {
+            getWorkers();
+        } else if ($('#etatyData').length) {
+            getEtaty();
+        } else if ($('#zespolyData').length) {
+            getZespoly();
+        } else if ($('#polaczoneData').length) {
+            getPolaczone();
+        }
     });
 
     $('#addWorkerForm').on('submit', function(e) {
@@ -24,11 +42,14 @@ $(document).ready(function(){
 });
 
 function getWorkers() {
+    $('#workersData').html('<tr><td colspan="10" class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></td></tr>');
     $.ajax({
         url: "getWorkers.php",
         method: 'POST'
     }).done(function(data) {
         $('#workersData').html(data);
+    }).fail(function(xhr, status, error) {
+        $('#workersData').html('<tr><td colspan="10" class="text-center text-danger">Błąd ładowania danych: ' + error + '</td></tr>');
     });
 }
 
