@@ -257,21 +257,8 @@ if (isset($_POST['submit'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <title>Edytowanie Pracownika</title>
-    <style>
-        .page-loader{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:9999}
-        .spinner{width:50px;height:50px;border:5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite}
-        @keyframes spin{to{transform:rotate(360deg)}}
-    </style>
 </head>
 <body>
-    <div id="page-loader" class="page-loader">
-        <div class="spinner"></div>
-    </div>
-    <script>
-        window.addEventListener('load', function() {
-            document.getElementById('page-loader').style.display = 'none';
-        });
-    </script>
 
     <div class="container">
         <ul class="nav nav-tabs mt-2">
