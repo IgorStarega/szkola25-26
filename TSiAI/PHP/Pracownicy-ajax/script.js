@@ -2,10 +2,6 @@ var workerModal;
 
 $(document).ready(function(){
     loadPage('workers');
-    
-    $(document).on('click', '.nav-link', function(e){
-        e.preventDefault();
-    });
 });
 
 function switchPage(page){
@@ -15,18 +11,16 @@ function switchPage(page){
 }
 
 function loadPage(page){
-    var html = '';
-    
     if(page === 'workers'){
-        html = '<form id="workersForm">' +
+        var html = '<form id="workersForm">' +
             '<div class="d-flex flex-wrap justify-content-between align-items-center p-4 bg-light shadow-sm rounded my-4 gap-3">' +
                 '<div class="input-group" style="max-width: 500px;">' +
                     '<input id="workersSearch" type="text" class="form-control border-primary" name="search" value="" placeholder="Wpisz szukaną frazę..." />' +
-                    '<button id="workersSearchBtn" class="btn btn-primary" type="button" onclick="searchWorkers(); return false;">Szukaj</button>' +
-                    '<input type="button" id="workersReset" class="btn btn-danger" value="Reset" onclick="resetSearch(); return false;" />' +
+                    '<button id="workersSearchBtn" class="btn btn-primary" type="button">Szukaj</button>' +
+                    '<button id="workersReset" class="btn btn-danger" type="button">Reset</button>' +
                 '</div>' +
                 '<div>' +
-                    '<button type="button" class="btn btn-success btn-lg shadow-sm" onclick="openAddModal(); return false;">Dodaj nowego pracownika</button>' +
+                    '<button id="addWorkerBtn" class="btn btn-success btn-lg shadow-sm" type="button">Dodaj nowego pracownika</button>' +
                 '</div>' +
             '</div>' +
         '</form>' +
@@ -38,14 +32,17 @@ function loadPage(page){
                 '<tbody id="workersData"></tbody>' +
             '</table>' +
         '</div></div>';
+        
+        $('#pageContent').html(html);
+        initAjaxWorkers();
     }
     else if(page === 'etaty'){
-        html = '<form id="etatyForm">' +
+        var html = '<form id="etatyForm">' +
             '<div class="d-flex flex-wrap justify-content-between align-items-center p-4 bg-light shadow-sm rounded my-4 gap-3">' +
                 '<div class="input-group" style="max-width: 500px;">' +
                     '<input id="etatySearch" type="text" class="form-control border-primary" name="search" value="" placeholder="Wpisz szukaną frazę..." />' +
                     '<button id="etatySearchBtn" class="btn btn-primary" type="button">Szukaj</button>' +
-                    '<input type="button" id="etatyReset" class="btn btn-danger" value="Reset" />' +
+                    '<button id="etatyReset" class="btn btn-danger" type="button">Reset</button>' +
                 '</div>' +
             '</div>' +
         '</form>' +
@@ -55,14 +52,17 @@ function loadPage(page){
                 '<tbody id="etatyData"></tbody>' +
             '</table>' +
         '</div></div>';
+        
+        $('#pageContent').html(html);
+        initAjaxEtaty();
     }
     else if(page === 'zespoly'){
-        html = '<form id="zespolyForm">' +
+        var html = '<form id="zespolyForm">' +
             '<div class="d-flex flex-wrap justify-content-between align-items-center p-4 bg-light shadow-sm rounded my-4 gap-3">' +
                 '<div class="input-group" style="max-width: 500px;">' +
                     '<input id="zespolySearch" type="text" class="form-control border-primary" name="search" value="" placeholder="Wpisz szukaną frazę..." />' +
                     '<button id="zespolySearchBtn" class="btn btn-primary" type="button">Szukaj</button>' +
-                    '<input type="button" id="zespolyReset" class="btn btn-danger" value="Reset" />' +
+                    '<button id="zespolyReset" class="btn btn-danger" type="button">Reset</button>' +
                 '</div>' +
             '</div>' +
         '</form>' +
@@ -72,14 +72,17 @@ function loadPage(page){
                 '<tbody id="zespolyData"></tbody>' +
             '</table>' +
         '</div></div>';
+        
+        $('#pageContent').html(html);
+        initAjaxZespoly();
     }
     else if(page === 'polaczone'){
-        html = '<form id="polaczoneForm">' +
+        var html = '<form id="polaczoneForm">' +
             '<div class="d-flex flex-wrap justify-content-start align-items-center p-4 bg-light shadow-sm rounded my-4 gap-3">' +
                 '<div class="input-group" style="max-width: 500px;">' +
                     '<input id="polaczoneSearch" type="text" class="form-control border-primary" name="search" value="" placeholder="Wpisz szukaną frazę..." />' +
                     '<button id="polaczoneSearchBtn" class="btn btn-primary" type="button">Szukaj</button>' +
-                    '<input type="button" id="polaczoneReset" class="btn btn-danger" value="Reset" />' +
+                    '<button id="polaczoneReset" class="btn btn-danger" type="button">Reset</button>' +
                 '</div>' +
             '</div>' +
         '</form>' +
@@ -89,34 +92,31 @@ function loadPage(page){
                 '<tbody id="polaczoneData"></tbody>' +
             '</table>' +
         '</div></div>';
+        
+        $('#pageContent').html(html);
+        initAjaxPolaczone();
     }
-    
-    $('#pageContent').html(html);
-    
-    if(page === 'workers') initAjaxWorkers();
-    else if(page === 'etaty') loadEtaty();
-    else if(page === 'zespoly') loadZespoly();
-    else if(page === 'polaczone') loadPolaczone();
 }
 
 function initAjaxWorkers(){
     loadWorkers();
     
-    $(document).on('click', '#workersSearchBtn', function(){
+    $('#workersSearchBtn').on('click', function(){
         loadWorkers({ search: $('#workersSearch').val() });
     });
     
-    $(document).on('click', '#workersReset', function(){
+    $('#workersReset').on('click', function(){
         $('#workersSearch').val('');
         loadWorkers();
     });
     
-    $(document).on('click', '#saveWorkerBtn', function(){
-        saveWorker();
+    $('#addWorkerBtn').on('click', function(){
+        openAddModal();
     });
 }
 
 function loadWorkers(data){
+    if(!data) data = {};
     var cols = $('#workersData').closest('table').find('thead th').length;
     $('#workersData').html('<tr><td colspan="'+cols+'"><div class="spinner-border text-primary d-block mx-auto" role="status"></div></td></tr>');
 
@@ -126,23 +126,14 @@ function loadWorkers(data){
         });
 }
 
-function searchWorkers(){
-    loadWorkers({ search: $('#workersSearch').val() });
-}
-
-function resetSearch(){
-    $('#workersSearch').val('');
-    loadWorkers();
-}
-
 function initAjaxEtaty(){
     loadEtaty();
     
-    $(document).on('click', '#etatySearchBtn', function(){
+    $('#etatySearchBtn').on('click', function(){
         loadEtaty({ search: $('#etatySearch').val() });
     });
     
-    $(document).on('click', '#etatyReset', function(){
+    $('#etatyReset').on('click', function(){
         $('#etatySearch').val('');
         loadEtaty();
     });
@@ -161,11 +152,11 @@ function loadEtaty(data){
 function initAjaxZespoly(){
     loadZespoly();
     
-    $(document).on('click', '#zespolySearchBtn', function(){
+    $('#zespolySearchBtn').on('click', function(){
         loadZespoly({ search: $('#zespolySearch').val() });
     });
     
-    $(document).on('click', '#zespolyReset', function(){
+    $('#zespolyReset').on('click', function(){
         $('#zespolySearch').val('');
         loadZespoly();
     });
@@ -184,11 +175,11 @@ function loadZespoly(data){
 function initAjaxPolaczone(){
     loadPolaczone();
     
-    $(document).on('click', '#polaczoneSearchBtn', function(){
+    $('#polaczoneSearchBtn').on('click', function(){
         loadPolaczone({ search: $('#polaczoneSearch').val() });
     });
     
-    $(document).on('click', '#polaczoneReset', function(){
+    $('#polaczoneReset').on('click', function(){
         $('#polaczoneSearch').val('');
         loadPolaczone();
     });
@@ -212,6 +203,10 @@ function openAddModal(){
         $('#workerModalContent').html(response);
         workerModal = new bootstrap.Modal(document.getElementById('workerModal'));
         workerModal.show();
+        
+        $('#saveWorkerBtn').on('click', function(){
+            saveWorker();
+        });
     });
 }
 
@@ -223,22 +218,53 @@ function openEditModal(id){
     }).done(function(response){
         var worker = JSON.parse(response);
         
-        $('#workerModalContent').html('');
-        $('#modalTitle').text('Edytuj pracownika');
-        
-        var form = $('#workerFormModal');
-        form.find('#workerId').val(worker.ID_PRAC);
-        form.find('#workerImie').val(worker.IMIE);
-        form.find('#workerNazwisko').val(worker.NAZWISKO);
-        form.find('#workerEtat').val(worker.ETAT);
-        form.find('#workerSzef').val(worker.ID_SZEFA || '');
-        form.find('#workerZespol').val(worker.ID_ZESP || '');
-        form.find('#workerData').val(worker.ZATRUDNIONY);
-        form.find('#workerPlaca').val(worker.PLACA_POD);
-        form.find('#workerPlacaDod').val(worker.PLACA_DOD || '');
+        $('#workerModalContent').html(
+            '<div class="modal-header">' +
+                '<h5 class="modal-title">Edytuj pracownika</h5>' +
+                '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>' +
+            '</div>' +
+            '<div class="modal-body">' +
+                '<form id="workerFormModal">' +
+                '<input type="hidden" id="workerId" value="'+worker.ID_PRAC+'">' +
+                '<div class="form-floating mb-3">' +
+                    '<input type="text" class="form-control" id="workerImie" value="'+worker.IMIE+'">' +
+                    '<label>Imię</label>' +
+                '</div>' +
+                '<div class="form-floating mb-3">' +
+                    '<input type="text" class="form-control" id="workerNazwisko" value="'+worker.NAZWISKO+'">' +
+                    '<label>Nazwisko</label>' +
+                '</div>' +
+                '<div class="form-floating mb-3">' +
+                    '<select class="form-select mb-3" id="workerEtat"><option>'+worker.ETAT+'</option></select>' +
+                    '<label>Etat</label>' +
+                '</div>' +
+                '<div class="form-floating mb-3">' +
+                    '<input type="date" class="form-control" id="workerData" value="'+worker.ZATRUDNIONY+'">' +
+                    '<label>Data zatrudnienia</label>' +
+                '</div>' +
+                '<div class="form-floating mb-3">' +
+                    '<input type="number" class="form-control" id="workerPlaca" value="'+worker.PLACA_POD+'">' +
+                    '<label>Płaca podstawowa</label>' +
+                '</div>' +
+                '<div class="form-floating mb-3">' +
+                    '<input type="number" class="form-control" id="workerPlacaDod" value="'+(worker.PLACA_DOD||'')+'">' +
+                    '<label>Płaca dodatkowa</label>' +
+                '</div>' +
+                '<div id="workerErrors"></div>' +
+                '</form>' +
+            '</div>' +
+            '<div class="modal-footer">' +
+                '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>' +
+                '<button type="button" class="btn btn-success" id="saveWorkerBtn">Zapisz</button>' +
+            '</div>'
+        );
         
         workerModal = new bootstrap.Modal(document.getElementById('workerModal'));
         workerModal.show();
+        
+        $('#saveWorkerBtn').on('click', function(){
+            saveWorker();
+        });
     });
 }
 

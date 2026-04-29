@@ -1,7 +1,7 @@
 <?php
 require_once 'database.php';
 
-if(isset($_POST['search']) && $_POST['search'] != ''){
+if(isset($_POST['search']) && !empty($_POST['search'])){
     $stmt = $pdo->prepare("SELECT * FROM pracownicy WHERE IMIE LIKE :imie OR NAZWISKO LIKE :nazwisko");
     $stmt->bindValue(':imie', '%'.$_POST['search'].'%', PDO::PARAM_STR);
     $stmt->bindValue(':nazwisko', '%'.$_POST['search'].'%', PDO::PARAM_STR);
