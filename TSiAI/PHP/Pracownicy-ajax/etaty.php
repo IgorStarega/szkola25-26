@@ -24,30 +24,24 @@ if (isset($_POST['delete']) && isset($_POST['delete_nazwa'])){
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <title>Bazy danych - Etaty</title>
-
-    <style>
-        .page-loader{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:9999}
-        .page-loader .spinner{width:50px;height:50px;border:5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite}
-        @keyframes spin{to{transform:rotate(360deg)}}
-        .lds-roller{display:inline-block;position:relative;width:80px;height:80px}
-        .lds-roller div{animation:lds-roller 1.2s cubic-bezier(.5,0,.5,1) infinite;transform-origin:40px 40px}
-        .lds-roller div:after{content:" ";display:block;position:absolute;width:7px;height:7px;border-radius:50%;background:#00f;margin:-4px 0 0 -4px}
-        .lds-roller div:nth-child(1){animation-delay:-.036s}.lds-roller div:nth-child(1):after{top:63px;left:63px}
-        .lds-roller div:nth-child(2){animation-delay:-.072s}.lds-roller div:nth-child(2):after{top:68px;left:56px}
-        .lds-roller div:nth-child(3){animation-delay:-.108s}.lds-roller div:nth-child(3):after{top:71px;left:48px}
-        .lds-roller div:nth-child(4){animation-delay:-.144s}.lds-roller div:nth-child(4):after{top:72px;left:40px}
-        .lds-roller div:nth-child(5){animation-delay:-.18s}.lds-roller div:nth-child(5):after{top:71px;left:32px}
-        .lds-roller div:nth-child(6){animation-delay:-.216s}.lds-roller div:nth-child(6):after{top:68px;left:24px}
-        .lds-roller div:nth-child(7){animation-delay:-.252s}.lds-roller div:nth-child(7):after{top:63px;left:17px}
-        .lds-roller div:nth-child(8){animation-delay:-.288s}.lds-roller div:nth-child(8):after{top:56px;left:12px}
-        @keyframes lds-roller{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
-    </style>
 </head>
 <body>
 
-<div id="page-loader" class="page-loader" style="display:none;">
-    <div class="spinner"></div>
-</div>
+<?php
+
+if(isset($_POST['submit']) && $_POST['search']!=''){
+    $stmt = $pdo->prepare("SELECT * FROM etaty WHERE NAZWA LIKE :nazwa");
+    $stmt -> bindValue(':nazwa', '%'.$_POST['search'].'%', PDO::PARAM_STR);
+    $stmt->execute();
+}
+else if (isset($_POST['reset'])){
+    $stmt = $pdo->query('SELECT * FROM etaty');
+}
+else
+{
+    $stmt = $pdo->query('SELECT * FROM etaty');
+}
+?>
 
 <div class="container">
     <ul class="nav nav-tabs mt-2">
@@ -64,12 +58,12 @@ if (isset($_POST['delete']) && isset($_POST['delete_nazwa'])){
             <a class="nav-link" href="polaczone.php">Połączone</a>
         </li>
     </ul>
-    <form action="" method="post" id="form">
+    <form action="" method="post">
         <div class="d-flex flex-wrap justify-content-between align-items-center p-4 bg-light shadow-sm rounded my-4 gap-3">
             <div class="input-group" style="max-width: 500px;">
-                <input type="text" class="form-control border-primary" name="search" id="search" placeholder="Wpisz szukaną frazę..." />
+                <input type="text" class="form-control border-primary" name="search" value="<?php echo isset($_POST['reset']) ? '' : (isset($_POST['search']) ? htmlspecialchars($_POST['search']) : ''); ?>" placeholder="Wpisz szukaną frazę..." />
                 <button class="btn btn-primary" type="submit" name="submit">Szukaj</button>
-                <input type="button" class="btn btn-danger" id="resetBtn" value="Reset" />
+                <input type="submit" class="btn btn-danger" name="reset" value="Reset" />
             </div>
             <div>
                 <a href="dodaj/etat.php" class="btn btn-success btn-lg shadow-sm">Dodaj nowy etat</a>
@@ -87,10 +81,33 @@ if (isset($_POST['delete']) && isset($_POST['delete_nazwa'])){
                     <th scope="col">Akcje</th>
                 </tr>
                 </thead>
-                <tbody id="etatyData">
-                <tr>
-                    <td colspan="4"><div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></td>
-                </tr>
+                <tbody>
+                <?php
+                foreach ($stmt as $row){
+                    echo '<tr>';
+                    echo '<td>'.$row['NAZWA'].'</td>';
+                    echo '<td>'.$row['PLACA_OD'].'</td>';
+                    echo '<td>'.$row['PLACA_DO'].'</td>';
+                    echo '<td><a href="edytuj/etaty.php?nazwa='.$row['NAZWA'].'"><button type="button" class="btn btn-outline-secondary me-2"><i class="bi bi-pencil-square"></i></button></a>';
+                    echo '<button type="button" class="btn btn-outline-danger" 
+                                    tabindex="0"
+                                    data-bs-toggle="popover"
+                                    data-bs-placement="top"
+                                    data-bs-trigger="focus"
+                                    data-bs-title="Potwierdź usunięcie"
+                                    data-bs-content="<p class=\'mb-2\'>Czy na pewno chcesz usunąć etat: '. $row['NAZWA'] .'?</p>
+                                    <form method=\'post\' class=\'d-inline\'>
+                                        <input type=\'hidden\' name=\'delete_nazwa\' value=\''. $row['NAZWA'] .'\'>
+                                        <button type=\'submit\' name=\'delete\' class=\'btn btn-danger btn-sm\'>Usuń</button>
+                                    </form> 
+                                    <button type=\'button\' class=\'btn btn-secondary btn-sm\' data-bs-dismiss=\'popover\'>Anuluj</button>">
+                                <i class="bi bi-trash3"></i>
+                                </button>
+                            </td>
+                            ';
+                    echo '</tr>';
+                }
+                ?>
                 </tbody>
             </table>
 
@@ -99,7 +116,17 @@ if (isset($_POST['delete']) && isset($_POST['delete_nazwa'])){
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript" src="script.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl, {
+                trigger: 'focus',
+                html: true,
+                sanitize: false
+            });
+        });
+    });
+</script>
 </body>
 </html>
