@@ -67,6 +67,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         exit;
     }
     
+    if ($_POST['action'] === 'edit') {
+        $imie = $_POST['imie'] ?? '';
+        $nazwisko = $_POST['nazwisko'] ?? '';
+        $etat = $_POST['etat'] ?? '';
+        $szef = $_POST['szef'] ?? null;
+        if ($szef === '' || $szef === '0') {
+            $szef = null;
+        }
+        $zespol = $_POST['zespol'] ?? '';
+        $data_zatrudnienia = $_POST['data_zatrudnienia'] ?? '';
+        $placa_pod = $_POST['placa_pod'] ?? '';
+        $placa_dod = $_POST['placa_dod'] ?? null;
+        $id = $_POST['id'] ?? '';
+
+        try {
+            $stmt = $pdo->prepare("UPDATE pracownicy SET NAZWISKO = :nazwisko, IMIE = :imie, ETAT = :etat, ID_SZEFA = :szef, ZATRUDNIONY = :data_zatrudnienia, PLACA_POD = :placa_pod, PLACA_DOD = :placa_dod, ID_ZESP = :id_zesp WHERE ID_PRAC = :id");
+            $stmt->bindParam(':nazwisko', $nazwisko);
+            $stmt->bindParam(':imie', $imie);
+            $stmt->bindParam(':etat', $etat);
+            $stmt->bindParam(':szef', $szef);
+            $stmt->bindParam(':data_zatrudnienia', $data_zatrudnienia);
+            $stmt->bindParam(':placa_pod', $placa_pod);
+            $stmt->bindParam(':placa_dod', $placa_dod);
+            $stmt->bindParam(':id_zesp', $zespol);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            
+            echo json_encode(['success' => true]);
+        } catch (PDOException $e) {
+            echo json_encode(['errors' => [$e->getMessage()]]);
+        }
+        exit;
+    }
+    
     if ($_POST['action'] === 'delete') {
         try {
             $stmt = $pdo->prepare("UPDATE pracownicy SET ID_SZEFA = NULL WHERE ID_SZEFA = :ID_SZEFA");
@@ -83,6 +117,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         }
         exit;
     }
+    
+    if ($_POST['action'] === 'get') {
+        $id = $_POST['id'] ?? '';
+        $stmt = $pdo->prepare("SELECT * FROM pracownicy WHERE ID_PRAC = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $worker = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        echo json_encode($worker);
+        exit;
+    }
 }
 
 $stmt = $pdo->prepare('SELECT NAZWA FROM etaty');
@@ -97,12 +142,13 @@ $stmt = $pdo->prepare('SELECT ID_ZESP, NAZWA FROM zespoly');
 $stmt->execute();
 $zespoly = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
-<form id="workerFormModal">
 <div class="modal-header">
 <h5 class="modal-title">Dodaj pracownika</h5>
 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <div class="modal-body">
+<form id="workerFormModal">
+<input type="hidden" id="workerId" value="">
 
 <div class="form-floating mb-3">
 <input type="text" name="imie" class="form-control" id="workerImie" placeholder="Jan">
@@ -160,9 +206,9 @@ $zespoly = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </div>
 
 <div id="workerErrors"></div>
+</form>
 </div>
 <div class="modal-footer">
 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
-<button type="button" class="btn btn-success" onclick="saveWorkerAdd(); return false;">Zapisz</button>
+<button type="button" class="btn btn-success" id="saveWorkerBtn">Zapisz</button>
 </div>
-</form>
