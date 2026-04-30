@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   sodipodi:docname="cw1.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.78840488"
+     inkscape:cx="397.00414"
+     inkscape:cy="459.78914"
+     inkscape:window-width="1920"
+     inkscape:window-height="1129"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Warstwa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       sodipodi:type="star"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+       id="path1-2"
+       inkscape:flatsided="false"
+       sodipodi:sides="3"
+       sodipodi:cx="60.742374"
+       sodipodi:cy="54.030506"
+       sodipodi:r1="33.559322"
+       sodipodi:r2="16.779661"
+       sodipodi:arg1="-1.5707963"
+       sodipodi:arg2="-0.52359878"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="m 60.742375,20.471184 14.531612,25.169491 14.531613,25.169493 -29.063226,-10e-7 -29.063226,0 14.531614,-25.169491 z"
+       inkscape:transform-center-y="-8.3898305"
+       transform="translate(29.600089,64.484359)" />
+    <path
+       id="path1"
+       style="fill:#c27e00;fill-opacity:1;stroke-width:0.264583"
+       inkscape:transform-center-y="-8.3898305"
+       d="m 81.776881,100.20453 -5.69836,9.8702 -14.531412,25.16952 h 29.062825 29.063346 l -14.53141,-25.16952 -4.96611,-8.60154 -6.618719,11.46338 -6.77323,-11.73158 -2.214335,3.83594 z" />
+  </g>
+</svg>
